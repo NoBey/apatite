@@ -68,6 +68,8 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+*.njsproj
+*.sln
 
 # Chutzpah Test files
 _Chutzpah*
@@ -243,6 +245,3 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-
-*.njsproj
-*.sln
