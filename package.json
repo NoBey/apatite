@@ -1,0 +1,23 @@
+{
+  "name": "apatite",
+  "version": "0.1.0-alpha.0",
+  "description": "Object Persistence Framework for Node.js",
+  "main": "index.js",
+  "author": {
+    "name": "Madhu",
+    "email": "pmadhur@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apatitejs/apatite"
+  },
+  "engines": {
+    "node": ">=6.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "oracledb": "^1.9.3",
+    "pg": "^4.5.6"
+  }
+}
