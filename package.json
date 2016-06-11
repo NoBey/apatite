@@ -1,6 +1,6 @@
 {
   "name": "apatite",
-  "version": "0.2.0-alfa.1",
+  "version": "0.2.0-alfa.2",
   "description": "Object Persistence Framework for Node.js",
   "main": "index.js",
   "author": {
@@ -22,9 +22,9 @@
     "README.md"
   ],
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "oracledb": "^1.9.3",
-    "pg": "^4.5.6"
+    "chai": "3.5.0",
+    "mocha": "2.4.5",
+    "oracledb": "1.9.3",
+    "pg": "4.5.6"
   }
 }
