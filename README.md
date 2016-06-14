@@ -163,7 +163,7 @@ $ npm install apatite
 
 ## Links
 
-[Documentation](https://github.com/apatitejs/doc/blob/master/doc.md)
+  - [Documentation](https://github.com/apatitejs/doc/blob/master/doc.md)
 
 ## License
 
