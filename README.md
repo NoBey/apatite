@@ -161,13 +161,9 @@ $ npm install apatite
 	...
 	```
 
-## Tests
+## Links
 
-Coming soon.
-
-## Contributors
-
-Coming soon.
+[Documentation](https://github.com/apatitejs/doc/blob/master/doc.md)
 
 ## License
 
