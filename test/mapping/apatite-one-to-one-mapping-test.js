@@ -101,11 +101,12 @@ describe('ApatiteOneToOneMappingTest', function () {
         }).should.Throw(mappingInfoStr + 'Target columns have duplicates.');
         
         modelDescriptor.deleteMapping('location');
-        modelDescriptor.newOneToOneMapping('location', 'Location', [locColumn], [locColumn]);
+        tempColumn = locTable.addNewColumn('TEMP', apatite.dialect.newIntegerType(10));
+        modelDescriptor.newOneToOneMapping('location', 'Location', [tempColumn], [locColumn]);
         
         (function () {
             apatite.newSession(function (err, session) { });
-        }).should.Throw(mappingInfoStr + 'The source column: OID does not belong to table: DEPT.');
+        }).should.Throw(mappingInfoStr + 'The source column: TEMP does not belong to table: DEPT.');
         
         modelDescriptor.deleteMapping('location');
         modelDescriptor.newOneToOneMapping('location', 'Location', [column], [column]);
@@ -113,6 +114,14 @@ describe('ApatiteOneToOneMappingTest', function () {
         (function () {
             apatite.newSession(function (err, session) { });
         }).should.Throw(mappingInfoStr + 'The target column: LOCATIONOID does not belong to table: LOCATION.');
+
+        modelDescriptor.deleteMapping('location');
+        modelDescriptor.newOneToOneMapping('location', 'Location', [column], [locColumn]);
+        column.bePrimaryKey();
+
+        (function () {
+            apatite.newSession(function (err, session) { });
+        }).should.Throw('One to one columns cannot be defined as part of the primary key for table: DEPT.');
 
     });
 })
