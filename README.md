@@ -165,6 +165,14 @@ $ npm install apatite
 
   - [Documentation](https://github.com/apatitejs/doc/blob/master/doc.md)
 
+## Tests
+
+To run the tests, install [mocha](https://github.com/mochajs/mocha) and then run:
+
+```bash
+$ npm test
+```
+
 ## License
 
   [MIT](LICENSE)
