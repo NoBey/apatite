@@ -167,7 +167,7 @@ $ npm install apatite
 
 ## Tests
 
-To run the tests, install [mocha](https://github.com/mochajs/mocha) and then run:
+To run the tests, install [mocha](https://github.com/mochajs/mocha), [chai](https://github.com/chaijs/chai) and then run:
 
 ```bash
 $ npm test
