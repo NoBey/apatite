@@ -12,6 +12,15 @@
     "type": "git",
     "url": "https://github.com/apatitejs/apatite"
   },
+  "keywords": [
+    "apatite",
+    "orm",
+    "persistence",
+    "framework",
+    "mapping",
+    "object",
+    "relational"
+  ],
   "engines": {
     "node": ">=6.1.0"
   },
