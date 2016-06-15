@@ -150,6 +150,30 @@ describe('ApatiteOneToOneQueryTest', function () {
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T2.NAME FROM EMP T1, DEPT T3, LOCATION T2 WHERE T1.DEPTOID = T3.OID AND T3.LOCATIONOID = T2.OID AND T3.LOCATIONOID = ?');
             expect(query.getBindings()[0]).to.equal(0);
+
+            var newDepartment = new Department();
+            newDepartment.name = 'Sales';
+            newDepartment.oid = 20;
+            query = session.newQuery(Employee).attr('department').eq(newDepartment);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME, T1.DEPTOID, T1.LOCATIONOID, T1.SECLOCATIONOID FROM EMP T1 WHERE ( T1.DEPTOID = ? )');
+            expect(query.getBindings()[0]).to.equal(20);
+
+            query = session.newQuery(Employee).attr('department').eq(null);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME, T1.DEPTOID, T1.LOCATIONOID, T1.SECLOCATIONOID FROM EMP T1 WHERE ( T1.DEPTOID = ? )');
+            expect(query.getBindings()[0]).to.equal(null);
+
+            var newLocation = new Location();
+            newLocation.name = 'First Floor';
+            newLocation.oid = 30;
+            query = session.newQuery(Employee).attr('department.location').eq(newLocation);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME, T1.DEPTOID, T1.LOCATIONOID, T1.SECLOCATIONOID FROM EMP T1, DEPT T2 WHERE T1.DEPTOID = T2.OID AND ( T2.LOCATIONOID = ? )');
+            expect(query.getBindings()[0]).to.equal(30);
         });
     });
 })
