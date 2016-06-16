@@ -69,13 +69,13 @@ class ApatiteTestConnection extends ApatiteConnection {
         onTransactionRollbacked(null);
     }
 
-    basicConnect(connectionOptions, onConnected) {
-        if (connectionOptions.userName !== 'apatite') {
+    basicConnect(onConnected) {
+        if (this.dialect.connectionOptions.userName !== 'apatite') {
             onConnected(new ApatiteError('User name invalid.'));
             return;
         }
 
-        if (connectionOptions.password !== 'test')
+        if (this.dialect.connectionOptions.password !== 'test')
             onConnected(new ApatiteError('Password invalid.'));
         else
             onConnected(null);
