@@ -127,6 +127,15 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME, T2.NAME, T3.NAME FROM EMP T1, LOCATION T2, LOCATION T3 WHERE T1.LOCATIONOID = T2.OID AND T1.SECLOCATIONOID = T3.OID');
 
+            query = apatite.newQuery(Employee).fetchAttrs(['name', 'location.name', 'secondaryLocation.name']);
+            query.setSession(session);
+            session.execute(query, function (err, results) {
+                expect(results.length).to.equal(4);
+                expect(results[0]['name']).to.equal('Madhu');
+                expect(results[0]['location.name']).to.equal('First Floor');
+                expect(results[0]['secondaryLocation.name']).to.equal('First Floor');
+            })
+
             query = apatite.newQuery(Employee).attr('department.oid').eq(0);
             query.setSession(session);
             query.fetchAttr('name');

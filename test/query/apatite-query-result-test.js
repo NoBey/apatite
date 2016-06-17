@@ -53,4 +53,17 @@ describe('ApatiteQueryResultTest', function () {
             }).should.Throw('Trying to execute a sub query which is not allowed. Create and store the query in a variable and then do chaining of expressions. Example: query = session.newQuery(Person); attr("name").eq("test").or.attr("id").eq("tom");');
         });
     });
+    it('Fetch Attributes Validity', function () {
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPet(session);
+            query.fetchAttr('name');
+            session.execute(query, function (err, petNames) {
+                expect(petNames.length).to.equal(4);
+                expect(petNames[0].name).to.equal('Dog');
+                expect(petNames[1].name).to.equal('Cat');
+                expect(petNames[2].name).to.equal('Mouse');
+            });
+
+        });
+    })
 })

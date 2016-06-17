@@ -6,6 +6,7 @@ var ApatiteError = require('../../lib/error/apatite-error');
 class ApatiteTestConnection extends ApatiteConnection {
     constructor(dialect) {
         super(dialect);
+        this.sqlCount = 0;
         this.petRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Dog' }, { 'T1.OID': 2, 'T1.NAME': 'Cat' }, { 'T1.OID': 3, 'T1.NAME': 'Mouse' }, { 'T1.OID': 4, 'T1.NAME': 'Donkey' }];
         this.petRecords2 = [{ 'T1.OID': 1, 'T1.NAME': 'Dog', 'T1.AGE': 11 }, { 'T1.OID': 2, 'T1.NAME': 'Cat', 'T1.AGE': 5 }, { 'T1.OID': 3, 'T1.NAME': 'Mouse', 'T1.AGE': 3 }, { 'T1.OID': 4, 'T1.NAME': 'Donkey', 'T1.AGE': 7 }];
         this.personRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Madhu', 'T1.PETOID': null }, { 'T1.OID': 2, 'T1.NAME': 'Sam', 'T1.PETOID': 1 }, { 'T1.OID': 3, 'T1.NAME': 'Peter', 'T1.PETOID': 2 }];
@@ -26,7 +27,15 @@ class ApatiteTestConnection extends ApatiteConnection {
             { 'T1.OID': 3, 'T1.NAME': 'Sam', 'T1.DEPTOID': 3 },
             { 'T1.OID': 4, 'T1.NAME': 'Scot', 'T1.DEPTOID': 1 },
         ];
+        this.mixedAttrsList = [
+            { 'T1.NAME': 'Madhu', 'T2.NAME': 'First Floor', 'T3.NAME': 'First Floor' },
+            { 'T1.NAME': 'Peter', 'T2.NAME': 'Second Floor', 'T3.NAME': 'First Floor' },
+            { 'T1.NAME': 'Sam', 'T2.NAME': 'Third Floor', 'T3.NAME': 'Third Floor' },
+            { 'T1.NAME': 'Scot', 'T2.NAME': 'Second Floor', 'T3.NAME': 'Third Floor' },
+        ];
         this.sqlResults = {
+            'SELECT T1.NAME, T2.NAME, T3.NAME FROM EMP T1, LOCATION T2, LOCATION T3 WHERE T1.LOCATIONOID = T2.OID AND T1.SECLOCATIONOID = T3.OID': this.mixedAttrsList,
+            'SELECT T1.NAME FROM PET T1': this.petRecords,
             'SELECT T1.OID, T1.NAME FROM PET T1': this.petRecords,
             'SELECT T1.OID, T1.NAME, T1.AGE FROM PET T1': this.petRecords2,
             'SELECT T1.OID, T1.NAME, T1.PETOID FROM PERSON T1': this.personRecords,
@@ -86,6 +95,7 @@ class ApatiteTestConnection extends ApatiteConnection {
         //console.log(bindings);
         //if (bindings.length && (bindings[0] === 6))
         //    console.log('');
+        this.sqlCount++;
         onExecuted(null, this.sqlResults[sqlStr + bindings.join('')]);
     }
 }

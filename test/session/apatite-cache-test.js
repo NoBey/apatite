@@ -25,7 +25,7 @@ describe('ApatiteCacheTest', function () {
                 pet = session.findObjectInCache('Pet', '5');
                 expect(pet).to.equal(null);
             });
-
+            expect(session.connection.sqlCount).to.equal(1);
             util.apatite.defaultCacheSize = 2;
             session.clearCache();
             //if the cache size reached its capacity, remove objects which were inserted first
@@ -43,6 +43,7 @@ describe('ApatiteCacheTest', function () {
             util.apatite.defaultCacheSize = 100;
             session.clearCache();
 
+            expect(session.connection.sqlCount).to.equal(2);
             //lazy loading of one-to-one mappings
             query = util.newQueryForPerson(session);
             session.execute(query, function (err, people) {
@@ -70,7 +71,7 @@ describe('ApatiteCacheTest', function () {
                 });
                 
             });
-
+            expect(session.connection.sqlCount).to.equal(5);
             session.clearCache();
             query = util.newQueryForPet(session);
             //ensure objects are retured from cache if the where expression matches
@@ -91,6 +92,7 @@ describe('ApatiteCacheTest', function () {
                 });
             });
 
+            expect(session.connection.sqlCount).to.equal(8);
             session.clearCache();
             query = util.newQueryForPet(session).attr('name').eq('Dog');
             session.execute(query, function (err, allPets) {
@@ -110,6 +112,12 @@ describe('ApatiteCacheTest', function () {
                     query = util.newQueryForPet(session).attr('name').eq('Dog');
                     session.execute(query, function (err, allPets3) {
                         expect(allPets3.length).to.equal(1);
+                        session.connection.sqlCount = 0;
+                        query = util.newQueryForPet(session).attr('oid').eq(1);
+                        session.execute(query, function (err, petsInCache) {
+                            expect(session.connection.sqlCount).to.equal(0); // no sql should be issued because pet with oid 1 is already in the cache.
+                            expect(petsInCache.length).to.equal(1);
+                        })
                     });
                 });
             });
