@@ -1,6 +1,6 @@
 {
   "name": "apatite",
-  "version": "0.2.0-alfa.12",
+  "version": "0.2.0-alfa.14",
   "description": "Object Persistence Framework for Node.js",
   "main": "index.js",
   "author": {
