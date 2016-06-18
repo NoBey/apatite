@@ -36,10 +36,10 @@ describe('ApatiteSimpleQueryTest', function () {
         
         util.newSession(function (err, session) {
 
-            (function () {
-                var qry = apatite.newQuery(InvalidModel);
-                session.execute(qry, function () { });
-            }).should.Throw('Descriptor for model: InvalidModel not found.');
+            var qry = apatite.newQuery(InvalidModel);
+            session.execute(qry, function (err) {
+                expect(err.message).to.equal('Descriptor for model: InvalidModel not found.');
+            });
 
             (function () {
                 apatite.newQuery();
