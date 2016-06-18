@@ -1,4 +1,4 @@
-﻿# Apatite - Alfa
+﻿# Apatite
 
 Object persistence framework for Node.js.
 
