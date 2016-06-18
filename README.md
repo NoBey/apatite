@@ -123,7 +123,7 @@ $ npm install apatite
 			query.attr('name').eq('Sales');
 			query.execute(function(err, departments) {
 				if (err) {
-					console.error(err.message);
+					changesDone(err);
 					return;
 				}
 				departments[0].name = 'Pre-Sales';
@@ -146,7 +146,7 @@ $ npm install apatite
 			query.attr('name').eq('Pre-Sales');
 			query.execute(function(err, departments) {
 				if (err) {
-					console.error(err.message);
+					changesDone(err);
 					return;
 				}
 				session.registerDelete(departments[0]);
