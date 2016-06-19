@@ -43,23 +43,23 @@ describe('ApatiteOneToOneQueryTest', function () {
         }
 
         table = apatite.newTable('DEPT');
-        modelDescriptor = apatite.newModelDescriptor(Department, table);
+        var deptModelDescriptor = apatite.newModelDescriptor(Department, table);
         
         column = table.addNewColumn('OID', apatite.dialect.newIntegerType(10));
         column.bePrimaryKey();
-        modelDescriptor.newSimpleMapping('oid', column);
+        deptModelDescriptor.newSimpleMapping('oid', column);
         
         column = table.addNewColumn('ID', apatite.dialect.newVarCharType(15));
-        modelDescriptor.newSimpleMapping('id', column);
+        deptModelDescriptor.newSimpleMapping('id', column);
         
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));
-        modelDescriptor.newSimpleMapping('name', column);
+        deptModelDescriptor.newSimpleMapping('name', column);
         
         column = table.addNewColumn('LOCATIONOID', apatite.dialect.newIntegerType(10));
         var locTable = apatite.getOrCreateTable('LOCATION');
         var locColumn = locTable.getColumn('OID');
         
-        modelDescriptor.newOneToOneMapping('location', 'Location', [column], [locColumn]);
+        deptModelDescriptor.newOneToOneMapping('location', 'Location', [column], [locColumn]);
 
         class Employee {
             constructor() {
@@ -73,17 +73,17 @@ describe('ApatiteOneToOneQueryTest', function () {
         }
 
         table = apatite.newTable('EMP');
-        modelDescriptor = apatite.newModelDescriptor(Employee, table);
+        var empModelDescriptor = apatite.newModelDescriptor(Employee, table);
         
         column = table.addNewColumn('OID', apatite.dialect.newIntegerType(10));
         column.bePrimaryKey();
-        modelDescriptor.newSimpleMapping('oid', column);
+        empModelDescriptor.newSimpleMapping('oid', column);
         
         column = table.addNewColumn('ID', apatite.dialect.newVarCharType(15));
-        modelDescriptor.newSimpleMapping('id', column);
+        empModelDescriptor.newSimpleMapping('id', column);
         
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));
-        modelDescriptor.newSimpleMapping('name', column);
+        empModelDescriptor.newSimpleMapping('name', column);
         
         column = table.addNewColumn('DEPTOID', apatite.dialect.newIntegerType(10));
         var deptTable = apatite.getOrCreateTable('DEPT');
@@ -91,13 +91,13 @@ describe('ApatiteOneToOneQueryTest', function () {
         if (!deptColumn)
             deptColumn = deptTable.addNewPrimaryKeyColumn('OID', apatite.dialect.newIntegerType(10));
         
-        modelDescriptor.newOneToOneMapping('department', 'Department', [column], [deptColumn]);
+        empModelDescriptor.newOneToOneMapping('department', 'Department', [column], [deptColumn]);
         
         column = table.addNewColumn('LOCATIONOID', apatite.dialect.newIntegerType(10));
-        modelDescriptor.newOneToOneMapping('location', 'Location', [column], [locColumn]);
+        empModelDescriptor.newOneToOneMapping('location', 'Location', [column], [locColumn]);
         
         column = table.addNewColumn('SECLOCATIONOID', apatite.dialect.newIntegerType(10));
-        modelDescriptor.newOneToOneMapping('secondaryLocation', 'Location', [column], [locColumn]);
+        empModelDescriptor.newOneToOneMapping('secondaryLocation', 'Location', [column], [locColumn]);
         
         util.newSession(function (err, session) {
 
@@ -183,6 +183,35 @@ describe('ApatiteOneToOneQueryTest', function () {
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME, T1.DEPTOID, T1.LOCATIONOID, T1.SECLOCATIONOID FROM EMP T1, DEPT T2 WHERE T1.DEPTOID = T2.OID AND ( T2.LOCATIONOID = ? )');
             expect(query.getBindings()[0]).to.equal(30);
+
+            empModelDescriptor.getMappingForAttribute('location').beLeftOuterJoin();
+            query = apatite.newQuery(Employee).fetchAttrs(['name', 'location.name', 'secondaryLocation.name']);
+            query.setSession(session);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME, T2.NAME, T3.NAME FROM EMP T1, LOCATION T3 LEFT OUTER JOIN LOCATION T2 ON T1.LOCATIONOID = T2.OID WHERE T1.SECLOCATIONOID = T3.OID');
+
+            empModelDescriptor.getMappingForAttribute('secondaryLocation').beLeftOuterJoin();
+            query = apatite.newQuery(Employee).fetchAttrs(['name', 'location.name', 'secondaryLocation.name']);
+            query.setSession(session);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME, T2.NAME, T3.NAME FROM EMP T1 LEFT OUTER JOIN LOCATION T2 ON T1.LOCATIONOID = T2.OID LEFT OUTER JOIN LOCATION T3 ON T1.SECLOCATIONOID = T3.OID');
+
+            empModelDescriptor.getMappingForAttribute('department').beLeftOuterJoin();
+            query = apatite.newQuery(Employee).attr('department.location.oid').eq(0);
+            query.setSession(session);
+            query.fetchAttr('department.location.name');
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T2.NAME FROM EMP T1, LOCATION T2 LEFT OUTER JOIN DEPT T3 ON T1.DEPTOID = T3.OID WHERE T3.LOCATIONOID = T2.OID AND T3.LOCATIONOID = ?');
+
+            deptModelDescriptor.getMappingForAttribute('location').beLeftOuterJoin();
+            query = apatite.newQuery(Employee).attr('department.location.oid').eq(0);
+            query.setSession(session);
+            query.fetchAttr('department.location.name');
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T2.NAME FROM EMP T1 LEFT OUTER JOIN DEPT T3 ON T1.DEPTOID = T3.OID LEFT OUTER JOIN LOCATION T2 ON T3.LOCATIONOID = T2.OID WHERE T3.LOCATIONOID = ?');
+
         });
     });
 })
