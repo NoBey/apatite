@@ -14,6 +14,8 @@ var ShapeWithVertex = require('./test-models/shape-with-vertex.js');
 var Circle = require('./test-models/circle.js');
 var SemiCircle = require('./test-models/semi-circle.js');
 
+var Product = require('./test-models/product.js');
+
 class ApatiteTestUtil {
     constructor() {
         this.apatite = this.newApatite();
@@ -37,6 +39,8 @@ class ApatiteTestUtil {
         this.apatite.registerModel(ShapeWithVertex);
         this.apatite.registerModel(Circle);
         this.apatite.registerModel(SemiCircle);
+
+        this.apatite.registerModel(Product);
     }
 
     newPet() {
@@ -85,6 +89,10 @@ class ApatiteTestUtil {
 
     newQueryForSemiCircle(session) {
         return session.newQuery(SemiCircle);
+    }
+
+    newQueryForProduct(session) {
+        return session.newQuery(Product);
     }
 
     newSession(onSessionCreated) {

@@ -7,6 +7,7 @@ class ApatiteTestConnection extends ApatiteConnection {
     constructor(dialect) {
         super(dialect);
         this.sqlCount = 0;
+        this.productRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Shampoo', 'T1.QUANTITY': 100 }];
         this.petRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Dog' }, { 'T1.OID': 2, 'T1.NAME': 'Cat' }, { 'T1.OID': 3, 'T1.NAME': 'Mouse' }, { 'T1.OID': 4, 'T1.NAME': 'Donkey' }];
         this.petRecords2 = [{ 'T1.OID': 1, 'T1.NAME': 'Dog', 'T1.AGE': 11 }, { 'T1.OID': 2, 'T1.NAME': 'Cat', 'T1.AGE': 5 }, { 'T1.OID': 3, 'T1.NAME': 'Mouse', 'T1.AGE': 3 }, { 'T1.OID': 4, 'T1.NAME': 'Donkey', 'T1.AGE': 7 }];
         this.personRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Madhu', 'T1.PETOID': null }, { 'T1.OID': 2, 'T1.NAME': 'Sam', 'T1.PETOID': 1 }, { 'T1.OID': 3, 'T1.NAME': 'Peter', 'T1.PETOID': 2 }];
@@ -43,6 +44,7 @@ class ApatiteTestConnection extends ApatiteConnection {
             'SELECT T1.NAME, T2.NAME, T3.NAME FROM EMP T1, LOCATION T2, LOCATION T3 WHERE T1.LOCATIONOID = T2.OID AND T1.SECLOCATIONOID = T3.OID': this.mixedAttrsList,
             'SELECT T1.NAME FROM PET T1': this.petRecords,
             'SELECT T1.OID, T1.NAME FROM PET T1': this.petRecords,
+            'SELECT T1.OID, T1.NAME, T1.QUANTITY FROM PRODUCT T1': this.productRecords,
             'SELECT T1.OID, T1.NAME, T1.AGE FROM PET T1': this.petRecords2,
             'SELECT T1.OID, T1.NAME, T1.PETOID FROM PERSON T1': this.personRecords,
             'SELECT T1.OID, T1.NAME FROM PET T1 WHERE T1.OID = ?': [],
