@@ -50,5 +50,4 @@ describe('ApatiteTableTest', function () {
             new Column('TESTCOLUMN2', testTable, null);
         }).should.Throw('Column: TESTCOLUMN2 data type invalid.');
     })
-
 })

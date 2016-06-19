@@ -25,15 +25,21 @@ class ApatiteTestConnection extends ApatiteConnection {
             { 'T1.OID': 1, 'T1.NAME': 'Madhu', 'T1.DEPTOID': 1 },
             { 'T1.OID': 2, 'T1.NAME': 'Peter', 'T1.DEPTOID': 2 },
             { 'T1.OID': 3, 'T1.NAME': 'Sam', 'T1.DEPTOID': 3 },
-            { 'T1.OID': 4, 'T1.NAME': 'Scot', 'T1.DEPTOID': 1 },
+            { 'T1.OID': 4, 'T1.NAME': 'Scot', 'T1.DEPTOID': 1 }
         ];
         this.mixedAttrsList = [
             { 'T1.NAME': 'Madhu', 'T2.NAME': 'First Floor', 'T3.NAME': 'First Floor' },
             { 'T1.NAME': 'Peter', 'T2.NAME': 'Second Floor', 'T3.NAME': 'First Floor' },
             { 'T1.NAME': 'Sam', 'T2.NAME': 'Third Floor', 'T3.NAME': 'Third Floor' },
-            { 'T1.NAME': 'Scot', 'T2.NAME': 'Second Floor', 'T3.NAME': 'Third Floor' },
+            { 'T1.NAME': 'Scot', 'T2.NAME': 'Second Floor', 'T3.NAME': 'Third Floor' }
+        ];
+        this.mixedAttrsList2 = [
+            { 'T1.NAME': 'Madhu', 'T2.NAME': null },
+            { 'T1.NAME': 'Sam', 'T2.NAME': 'Dog' },
+            { 'T1.NAME': 'Peter', 'T2.NAME': 'Cat' }
         ];
         this.sqlResults = {
+            'SELECT T1.NAME, T2.NAME FROM PERSON T1, PET T2 WHERE T1.PETOID = T2.OID': this.mixedAttrsList2,
             'SELECT T1.NAME, T2.NAME, T3.NAME FROM EMP T1, LOCATION T2, LOCATION T3 WHERE T1.LOCATIONOID = T2.OID AND T1.SECLOCATIONOID = T3.OID': this.mixedAttrsList,
             'SELECT T1.NAME FROM PET T1': this.petRecords,
             'SELECT T1.OID, T1.NAME FROM PET T1': this.petRecords,
