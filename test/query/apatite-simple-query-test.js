@@ -49,14 +49,14 @@ describe('ApatiteSimpleQueryTest', function () {
             query.setSession(session);
             var sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME FROM USERS T1');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1');
 
             query = apatite.newQuery(User).attr('name').eq('test');
             query.setSession(session);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             var sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME FROM USERS T1 WHERE T1.NAME = ?');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ?');
             expect(sqlStatement.bindings[0]).to.equal('test');
 
 
@@ -66,7 +66,7 @@ describe('ApatiteSimpleQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME FROM USERS T1 WHERE T1.NAME = ? AND T1.ID = ?');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? AND T1.ID = ?');
             expect(sqlStatement.bindings[0]).to.equal('test');
             expect(sqlStatement.bindings[1]).to.equal('tom');
 
@@ -77,7 +77,7 @@ describe('ApatiteSimpleQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME FROM USERS T1 WHERE T1.NAME = ? OR T1.ID = ?');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? OR T1.ID = ?');
             expect(sqlStatement.bindings[0]).to.equal('test');
             expect(sqlStatement.bindings[1]).to.equal('tom');
 
@@ -88,7 +88,7 @@ describe('ApatiteSimpleQueryTest', function () {
             query.setSession(session);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
             sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID, T1.ID, T1.NAME FROM USERS T1 WHERE ( T1.NAME = ? OR T1.NAME = ? ) AND ( T1.ID = ? OR T1.ID = ? )');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE ( T1.NAME = ? OR T1.NAME = ? ) AND ( T1.ID = ? OR T1.ID = ? )');
             expect(sqlStatement.bindings[0]).to.equal('tom');
             expect(sqlStatement.bindings[1]).to.equal('jerry');
             expect(sqlStatement.bindings[2]).to.equal('x');
@@ -109,14 +109,14 @@ describe('ApatiteSimpleQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
             query.fetchAttr('name');
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME FROM USERS T1');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1');
 
             query = apatite.newQuery(User);
             query.setSession(session);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
             query.fetchAttrs(['id', 'name']);
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.ID, T1.NAME FROM USERS T1');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1');
 
             query = apatite.newQuery(User);
             query.setSession(session);
@@ -125,9 +125,53 @@ describe('ApatiteSimpleQueryTest', function () {
             query.fetchAttr('name');
 
             sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME FROM USERS T1 WHERE T1.NAME = ? AND T1.OID = ?');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? AND T1.OID = ?');
+            expect(sqlStatement.bindings[0]).to.equal('test');
+            expect(sqlStatement.bindings[1]).to.equal(1);
+
+            query = apatite.newQuery(User);
+            query.setSession(session);
+            query.attr('name').eq('test').and.attr('oid').eq(1);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            query.fetchCountAs('countOfUsers');
+
+            sqlStatement = sqlBuilder.buildSQLStatement();
+            expect(sqlStatement.sqlString).to.equal('SELECT COUNT(*) AS "countOfUsers" FROM USERS T1 WHERE T1.NAME = ? AND T1.OID = ?');
             expect(sqlStatement.bindings[0]).to.equal('test');
             expect(sqlStatement.bindings[1]).to.equal(1);
         });
     });
+    it('Function Query Validity', function () {
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPet(session);
+            query.fetchCountAs('countOfPets');
+            query.execute(function (err, petsCount) {
+                expect(petsCount[0].countOfPets).to.equal(4);
+            })
+
+            query = util.newQueryForBook(session);
+            query.fetchSumAs('numberOfPages', 'sumOfPages');
+            query.execute(function (err, pagesSum) {
+                expect(pagesSum[0].sumOfPages).to.equal(330);
+            })
+
+            query = util.newQueryForBook(session);
+            query.fetchMaxAs('numberOfPages', 'maxOfPages');
+            query.execute(function (err, pagesSum) {
+                expect(pagesSum[0].maxOfPages).to.equal(150);
+            })
+
+            query = util.newQueryForBook(session);
+            query.fetchMinAs('numberOfPages', 'minOfPages');
+            query.execute(function (err, pagesSum) {
+                expect(pagesSum[0].minOfPages).to.equal(60);
+            })
+
+            query = util.newQueryForBook(session);
+            query.fetchAvgAs('numberOfPages', 'avgOfPages');
+            query.execute(function (err, pagesSum) {
+                expect(pagesSum[0].avgOfPages).to.equal(110);
+            })
+        });
+    })
 })

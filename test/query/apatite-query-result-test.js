@@ -92,7 +92,7 @@ describe('ApatiteQueryResultTest', function () {
             query.attr('name').eq('Lion');
             var sqlBuilder = util.apatite.dialect.getSelectSQLBuilder(query);
             var sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID, T1.NAME FROM PET T1 WHERE T1.NAME = ?');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.NAME = ?');
             expect(sqlStatement.bindings[0]).to.equal('Cat');
 
             query = util.newQueryForPerson(session);
@@ -106,7 +106,7 @@ describe('ApatiteQueryResultTest', function () {
             query.attr('pet.name').eq('Lion');
             sqlBuilder = util.apatite.dialect.getSelectSQLBuilder(query);
             sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID, T1.NAME, T1.PETOID FROM PERSON T1, PET T2 WHERE T1.PETOID = T2.OID AND T2.NAME = ?');
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.PETOID AS "T1.PETOID" FROM PERSON T1, PET T2 WHERE T1.PETOID = T2.OID AND T2.NAME = ?');
             expect(sqlStatement.bindings[0]).to.equal('Cat');
         });
     })

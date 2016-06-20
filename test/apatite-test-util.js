@@ -16,6 +16,8 @@ var SemiCircle = require('./test-models/semi-circle.js');
 
 var Product = require('./test-models/product.js');
 
+var Book = require('./test-models/book.js');
+
 class ApatiteTestUtil {
     constructor() {
         this.apatite = this.newApatite();
@@ -41,6 +43,8 @@ class ApatiteTestUtil {
         this.apatite.registerModel(SemiCircle);
 
         this.apatite.registerModel(Product);
+
+        this.apatite.registerModel(Book);
     }
 
     newPet() {
@@ -93,6 +97,10 @@ class ApatiteTestUtil {
 
     newQueryForProduct(session) {
         return session.newQuery(Product);
+    }
+
+    newQueryForBook(session) {
+        return session.newQuery(Book);
     }
 
     newSession(onSessionCreated) {

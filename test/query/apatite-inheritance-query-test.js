@@ -14,25 +14,25 @@ describe('ApatiteInheritanceQueryTest', function() {
             query.setSession(session);
             var sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.NAME, T1.SHAPETYPE, T1.NOOFVERTICES, T1.TESTATTR FROM SHAPE T1');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.SHAPETYPE AS "T1.SHAPETYPE", T1.NOOFVERTICES AS "T1.NOOFVERTICES", T1.TESTATTR AS "T1.TESTATTR" FROM SHAPE T1');
 
             query = util.newQueryForCircle(session);
             query.setSession(session);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID, T1.NAME, T1.SHAPETYPE, T1.TESTATTR FROM SHAPE T1 WHERE ( T1.SHAPETYPE = ? )');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.SHAPETYPE AS "T1.SHAPETYPE", T1.TESTATTR AS "T1.TESTATTR" FROM SHAPE T1 WHERE ( T1.SHAPETYPE = ? )');
 
             query = util.newQueryForShapeWithVertex(session);
             query.setSession(session);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NOOFVERTICES, T1.OID, T1.NAME, T1.SHAPETYPE FROM SHAPE T1 WHERE ( T1.SHAPETYPE = ? )');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NOOFVERTICES AS "T1.NOOFVERTICES", T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.SHAPETYPE AS "T1.SHAPETYPE" FROM SHAPE T1 WHERE ( T1.SHAPETYPE = ? )');
 
             query = util.newQueryForSemiCircle(session);
             query.setSession(session);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
-            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.TESTATTR, T1.OID, T1.NAME, T1.SHAPETYPE FROM SHAPE T1 WHERE ( T1.SHAPETYPE = ? )');
+            expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.TESTATTR AS "T1.TESTATTR", T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.SHAPETYPE AS "T1.SHAPETYPE" FROM SHAPE T1 WHERE ( T1.SHAPETYPE = ? )');
         });
     });
 })

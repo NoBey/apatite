@@ -4,7 +4,7 @@ class Employee {
     constructor() {
         this.oid = 0;
         this.name = '';
-        this.department = [];
+        this.department = null;
     }
 
     static getModelDescriptor(apatite) {
