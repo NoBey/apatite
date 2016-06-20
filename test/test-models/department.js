@@ -18,7 +18,10 @@ class Department {
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));
         modelDescriptor.newSimpleMapping('name', column);
 
-        modelDescriptor.newOneToManyMapping('employees', 'Employee', 'department');
+        var empMapping = modelDescriptor.newOneToManyMapping('employees', 'Employee', 'department');
+        var query = apatite.newQuery(Department);
+        query.orderBy('name');
+        empMapping.setOrderByQuery(query)
 
         return modelDescriptor;
     }
