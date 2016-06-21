@@ -19,7 +19,7 @@ class Department {
         modelDescriptor.newSimpleMapping('name', column);
 
         var empMapping = modelDescriptor.newOneToManyMapping('employees', 'Employee', 'department');
-        var query = apatite.newQuery(Department);
+        var query = apatite.newToManyOrderQuery();
         query.orderBy('name');
         empMapping.setOrderByQuery(query)
 
