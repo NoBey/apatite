@@ -29,7 +29,7 @@ describe('ApatiteOneToManyMappingTest', function () {
         class Employee {
             constructor() {
                 this.oid = 0;
-                this.department = [];
+                this.department = null;
             }
 
             static getModelDescriptor(apatite) {

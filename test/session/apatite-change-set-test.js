@@ -276,5 +276,32 @@ describe('ApatiteChangeSetTest', function () {
 
             session.doChangesAndSave(changesToDo, onSaved);
         });
+
+        util.newSession(function (err, session) {
+            var query = util.newQueryForDepartment(session);
+            session.execute(query, function (err, allDepartments) {
+                expect(allDepartments.length).to.equal(3);
+
+                var department = allDepartments[0];
+                department.employees.getValue(function (empLoadErr, employees) {
+                    expect(employees.length).to.equal(2);
+                    var allEmployees = session.getAllObjectsInCache('Employee');
+                    expect(allEmployees.length).to.equal(2);
+                    var changesToDo = function (changesDone) {
+                        session.registerDelete(department) // employees should be deleted as well because of the cascade on delete option
+                        changesDone()
+                    }
+
+                    var onSaved = function (err) {
+                        expect(session.getAllObjectsInCache('Department').length).to.equal(2);
+                        expect(session.getAllObjectsInCache('Employee').length).to.equal(0);
+                    }
+
+                    session.doChangesAndSave(changesToDo, onSaved);
+                })
+
+            });
+        });
+
     });
 })

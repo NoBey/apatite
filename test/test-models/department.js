@@ -22,6 +22,7 @@ class Department {
         var query = apatite.newToManyOrderQuery();
         query.orderBy('name');
         empMapping.setOrderByQuery(query)
+        empMapping.cascadeOnDelete()
 
         return modelDescriptor;
     }
