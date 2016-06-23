@@ -57,28 +57,28 @@ describe('ApatiteOneToManyMappingTest', function () {
         var deptDescriptor = apatite.getModelDescriptor('Department');
 
         deptDescriptor.newOneToManyMapping('employees', null, 'department');
-        (function () {
-            apatite.newSession(function (err, session) { });
-        }).should.Throw('Invalid one-to-many mapping. Model name not defined for attribute: employees.');
+        apatite.newSession(function (err, session) {
+            expect(err.message).to.equal('Invalid one-to-many mapping. Model name not defined for attribute: employees.')
+         });
 
 
         deptDescriptor.deleteMapping('employees');
         deptDescriptor.newOneToManyMapping('employees', 'Empl', 'department');
-        (function () {
-            apatite.newSession(function (err, session) { });
-        }).should.Throw('Invalid one-to-many mapping attribute: employees. Model: Empl not registered.');
+        apatite.newSession(function (err, session) {
+            expect(err.message).to.equal('Invalid one-to-many mapping attribute: employees. Model: Empl not registered.')
+         });
 
         deptDescriptor.deleteMapping('employees');
         deptDescriptor.newOneToManyMapping('employees', 'Employee');
-        (function () {
-            apatite.newSession(function (err, session) { });
-        }).should.Throw('Invalid one-to-many mapping attribute: employees in model: Department. The to one-to-one attribute name is not defined.');
+        apatite.newSession(function (err, session) {
+            expect(err.message).to.equal('Invalid one-to-many mapping attribute: employees in model: Department. The to one-to-one attribute name is not defined.')
+         });
 
         deptDescriptor.deleteMapping('employees');
         deptDescriptor.newOneToManyMapping('employees', 'Employee', 'abc');
-        (function () {
-            apatite.newSession(function (err, session) { });
-        }).should.Throw('Invalid one-to-many mapping attribute: employees in model: Department. Mapping for attribute: abc not found in model: Employee.');
+        apatite.newSession(function (err, session) {
+            expect(err.message).to.equal('Invalid one-to-many mapping attribute: employees in model: Department. Mapping for attribute: abc not found in model: Employee.')
+         });
 
     });
 })
