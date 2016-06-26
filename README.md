@@ -2,9 +2,10 @@
 
 Object persistence framework for Node.js.
 
-[![Linux Build](https://travis-ci.org/apatitejs/apatite.svg?branch=master)](https://travis-ci.org/apatitejs/apatite)
 [![npm](https://img.shields.io/npm/v/apatite.svg)](https://npmjs.org/package/apatite)
 [![NPM Downloads](https://img.shields.io/npm/dm/apatite.svg)](https://npmjs.org/package/apatite)
+[![Linux Build](https://img.shields.io/travis/apatitejs/apatite/master.svg?label=linux)](https://travis-ci.org/apatitejs/apatite)
+[![Windows Build](https://img.shields.io/appveyor/ci/apatitejs/apatite/master.svg?label=windows)](https://ci.appveyor.com/project/apatitejs/apatite)
 
 ## Prerequisites
 
