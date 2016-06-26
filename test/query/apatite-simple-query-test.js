@@ -129,25 +129,6 @@ describe('ApatiteSimpleQueryTest', function () {
             expect(sqlStatement.bindings[0]).to.equal('test');
             expect(sqlStatement.bindings[1]).to.equal(1);
 
-            query = apatite.newQuery(User);
-            query.setSession(session);
-            query.attr('name').eq('test').orderBy('name').asc();
-            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
-            query.fetchAttr('name');
-
-            sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? ORDER BY T1.NAME');
-            expect(sqlStatement.bindings[0]).to.equal('test');
-
-            query = apatite.newQuery(User);
-            query.setSession(session);
-            query.attr('name').eq('test').orderBy('name').desc();
-            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
-            query.fetchAttr('name');
-
-            sqlStatement = sqlBuilder.buildSQLStatement();
-            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? ORDER BY T1.NAME DESC');
-            expect(sqlStatement.bindings[0]).to.equal('test');
         });
     });
     it('Function Query Validity', function () {

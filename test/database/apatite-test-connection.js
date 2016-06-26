@@ -48,6 +48,17 @@ class ApatiteTestConnection extends ApatiteConnection {
         this.maxBookPagesResult = Math.max.apply(Math,this.bookRecords.map(function(row){return row['T1.NUMBEROFPAGES'];}));
         this.minBookPagesResult = Math.min.apply(Math,this.bookRecords.map(function(row){return row['T1.NUMBEROFPAGES'];}));
         this.sqlResults = {
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1': this.bookRecords,
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME LIKE ?L%': [this.bookRecords[0], this.bookRecords[2]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME NOT LIKE ?L%': [this.bookRecords[1]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES > ?120': [this.bookRecords[0]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES >= ?120': [this.bookRecords[0], this.bookRecords[2]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES < ?120': [this.bookRecords[1]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES <= ?120': [this.bookRecords[1], this.bookRecords[2]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES <> ?120': [this.bookRecords[0], this.bookRecords[1]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES IN ?[120,150]': [this.bookRecords[0], this.bookRecords[2]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME IS NULL': [],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME IS NOT NULL': this.bookRecords,
             'SELECT AVG(T1.NUMBEROFPAGES) AS "avgOfPages" FROM BOOK T1': [{avgOfPages: this.booksSumResult['T1.NUMBEROFPAGES'] / this.bookRecords.length}],
             'SELECT MIN(T1.NUMBEROFPAGES) AS "minOfPages" FROM BOOK T1': [{minOfPages: this.minBookPagesResult}],
             'SELECT MAX(T1.NUMBEROFPAGES) AS "maxOfPages" FROM BOOK T1': [{maxOfPages: this.maxBookPagesResult}],
