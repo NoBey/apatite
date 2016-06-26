@@ -3,8 +3,8 @@ node_js:
  - "6.1.0"
 
 after_success:
-- install jscoverage
-- install coveralls
-- install mocha-lcov-reporter
+- npm install jscoverage
+- npm install coveralls
+- npm install mocha-lcov-reporter
 - ./node_modules/.bin/jscoverage lib lib-cov
 - ./node_modules/.bin/mocha --recursive -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
