@@ -3,4 +3,4 @@ node_js:
  - "6.1.0"
 
 
-after_script: "npm cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+after_script: "npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
