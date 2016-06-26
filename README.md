@@ -8,7 +8,6 @@ Object persistence framework for Node.js.
 [![Windows Build](https://img.shields.io/appveyor/ci/apatitejs/apatite/master.svg?label=windows)](https://ci.appveyor.com/project/apatitejs/apatite)
 [![Coverage Status](https://coveralls.io/repos/github/apatitejs/apatite/badge.svg?branch=master)](https://coveralls.io/github/apatitejs/apatite?branch=master)
 
-
 ## Prerequisites
 
   * Node version >=6.1.0. ES6 classes and few other features are required.
