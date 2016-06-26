@@ -2,9 +2,13 @@
 
 Object persistence framework for Node.js.
 
+[![Linux Build](https://travis-ci.org/apatitejs/apatite.svg?branch=master)](https://travis-ci.org/apatitejs/apatite)
+[![npm](https://img.shields.io/npm/v/apatite.svg)](https://npmjs.org/package/apatite)
+[![NPM Downloads](https://img.shields.io/npm/dm/apatite.svg)](https://npmjs.org/package/apatite)
+
 ## Prerequisites
 
-  * Node version >=6.1.0. ES6 classes are required.
+  * Node version >=6.1.0. ES6 classes and few other features are required.
   * [oracledb](https://github.com/oracle/node-oracledb) if you plan to use Oracle
   * [pg](https://github.com/brianc/node-postgres) if you plan to use Postgres
 
