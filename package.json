@@ -38,6 +38,6 @@
     "mocha-lcov-reporter": "^1.2.0"
   },
   "scripts": {
-    "test": "mocha --recursive --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "mocha --recursive"
   }
 }
