@@ -70,6 +70,8 @@ class ApatiteTestConnection extends ApatiteConnection {
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.AGE AS "T1.AGE" FROM PET T1 WHERE T1.OID = ?3': [this.petRecords2[2]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.AGE AS "T1.AGE" FROM PET T1 WHERE T1.OID = ?4': [this.petRecords2[4]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.NAME = ?Dog': [this.petRecords[0]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.NAME = ? AND T1.OID = ?Dog1': [this.petRecords[0]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.NAME = ? OR T1.NAME = ?DogDog': [this.petRecords[0]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.NAME = ?Donkey': [this.petRecords[3]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.SHAPETYPE AS "T1.SHAPETYPE", T1.TESTATTR AS "T1.TESTATTR", T1.NOOFVERTICES AS "T1.NOOFVERTICES" FROM SHAPE T1': this.shapeRecords,
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.SHAPETYPE AS "T1.SHAPETYPE", T1.NOOFVERTICES AS "T1.NOOFVERTICES", T1.TESTATTR AS "T1.TESTATTR" FROM SHAPE T1': this.shapeRecords,

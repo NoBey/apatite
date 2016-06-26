@@ -75,4 +75,13 @@ describe('ApatiteTest', function() {
         
         expect(apatite.registeredDescriptors['User'].model).to.equal(User);
     });
+    it('Dialect Validity', function () {
+        var Apatite = require('../lib/apatite');
+        var ApatiteDialect = require('../lib/database/apatite-dialect');
+        apatite = new Apatite(new ApatiteDialect({}));
+        (function () {
+            apatite.dialect.newConnection();
+        }).should.Throw('My subclass should have overridden this method.');
+
+    });
 })

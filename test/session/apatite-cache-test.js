@@ -77,7 +77,6 @@ describe('ApatiteCacheTest', function () {
             //ensure objects are retured from cache if the where expression matches
             session.execute(query, function (err, allPets) {
                 expect(allPets.length).to.equal(4); // all pets are now in cache
-                //console.log(allPets[0].name);
                 allPets[0]['someProp'] = 'someValue';
                 var nameQuery = util.newQueryForPet(session);
                 nameQuery.attr('name').eq('Dog');
@@ -101,6 +100,7 @@ describe('ApatiteCacheTest', function () {
                 allPets[0].name = 'DogX';
 
                 query = util.newQueryForPet(session).attr('name').eq('Dog');
+                query.and.attr('oid').eq('1');
                 session.execute(query, function (err, allPets2) {
                     expect(allPets2.length).to.equal(0);
 
@@ -110,6 +110,7 @@ describe('ApatiteCacheTest', function () {
                     pet.name = 'Dog';
 
                     query = util.newQueryForPet(session).attr('name').eq('Dog');
+                    query.or.attr('name').eq('Dog');
                     session.execute(query, function (err, allPets3) {
                         expect(allPets3.length).to.equal(1);
                         session.connection.sqlCount = 0;
