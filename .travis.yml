@@ -2,6 +2,17 @@ language: node_js
 node_js:
  - "6.1.0"
 
+services:
+ - postgresql
+
+before_script:
+ - psql -c 'drop database if exists apatite;' -U postgres
+ - psql -c 'create database apatite;' -U postgres
+ - npm install pg@5.1.0
+
+addons:
+ postgresql: "9.4"
+
 after_success:
 - npm install istanbul@0.4.4
 - npm install coveralls@2.11.9
