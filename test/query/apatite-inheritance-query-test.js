@@ -8,6 +8,15 @@ var util = new ApatiteTestUtil();
 
 describe('ApatiteInheritanceQueryTest', function() {
     it('Inheritance Query Validity', function () {
+        var typeFilterQuery = util.apatite.newTypeFilterQuery();
+        (function () {
+            typeFilterQuery.attr('foo.bar').eq('bar');
+        }).should.Throw('Only simple attributes are supported at the moment for type filter queries.');
+
+        (function () {
+            typeFilterQuery.attr('foo').eq('bar').and.attr('foo').eq('bazz');
+        }).should.Throw('AND not allowed for type filter queries.');
+
         util.newSession(function (err, session) {
             var apatite = util.apatite;
             var query = util.newQueryForShape(session);

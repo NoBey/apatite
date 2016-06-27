@@ -12,72 +12,193 @@ describe('ApatiteExpressionTest', function () {
             var query = util.newQueryForBook(session);
             session.execute(query, function (err, books) {
 
-                 query = util.newQueryForBook(session);
-                 query.attr('name').like('L%');
-                 expect(query.matchesObject(books[0])).to.equal(true);
-                 expect(query.matchesObject(books[1])).to.equal(false);
-                 expect(query.matchesObject(books[2])).to.equal(true);
+                query = util.newQueryForBook(session);
+                query.attr('name').like('L%');
+                expect(query.matchesObject(books[0])).to.equal(true);
+                expect(query.matchesObject(books[1])).to.equal(false);
+                expect(query.matchesObject(books[2])).to.equal(true);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('name').notLike('L%');
-                 expect(query.matchesObject(books[0])).to.equal(false);
-                 expect(query.matchesObject(books[1])).to.equal(true);
-                 expect(query.matchesObject(books[2])).to.equal(false);
+                query = util.newQueryForBook(session);
+                query.attr('name').like(null);
+                expect(query.matchesObject(books[0])).to.equal(false);
+                expect(query.matchesObject(books[1])).to.equal(false);
+                expect(query.matchesObject(books[2])).to.equal(false);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').gt(120);
-                 expect(query.matchesObject(books[0])).to.equal(true);
-                 expect(query.matchesObject(books[1])).to.equal(false);
-                 expect(query.matchesObject(books[2])).to.equal(false);
+                query = util.newQueryForBook(session);
+                query.attr('name').notLike('L%');
+                expect(query.matchesObject(books[0])).to.equal(false);
+                expect(query.matchesObject(books[1])).to.equal(true);
+                expect(query.matchesObject(books[2])).to.equal(false);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').ge(120);
-                 expect(query.matchesObject(books[0])).to.equal(true);
-                 expect(query.matchesObject(books[1])).to.equal(false);
-                 expect(query.matchesObject(books[2])).to.equal(true);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').gt(120);
+                expect(query.matchesObject(books[0])).to.equal(true);
+                expect(query.matchesObject(books[1])).to.equal(false);
+                expect(query.matchesObject(books[2])).to.equal(false);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').lt(120);
-                 expect(query.matchesObject(books[0])).to.equal(false);
-                 expect(query.matchesObject(books[1])).to.equal(true);
-                 expect(query.matchesObject(books[2])).to.equal(false);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').ge(120);
+                expect(query.matchesObject(books[0])).to.equal(true);
+                expect(query.matchesObject(books[1])).to.equal(false);
+                expect(query.matchesObject(books[2])).to.equal(true);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').le(120);
-                 expect(query.matchesObject(books[0])).to.equal(false);
-                 expect(query.matchesObject(books[1])).to.equal(true);
-                 expect(query.matchesObject(books[2])).to.equal(true);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').lt(120);
+                expect(query.matchesObject(books[0])).to.equal(false);
+                expect(query.matchesObject(books[1])).to.equal(true);
+                expect(query.matchesObject(books[2])).to.equal(false);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').ne(120);
-                 expect(query.matchesObject(books[0])).to.equal(true);
-                 expect(query.matchesObject(books[1])).to.equal(true);
-                 expect(query.matchesObject(books[2])).to.equal(false);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').le(120);
+                expect(query.matchesObject(books[0])).to.equal(false);
+                expect(query.matchesObject(books[1])).to.equal(true);
+                expect(query.matchesObject(books[2])).to.equal(true);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').isNULL();
-                 expect(query.matchesObject(books[0])).to.equal(false);
-                 expect(query.matchesObject(books[1])).to.equal(false);
-                 expect(query.matchesObject(books[2])).to.equal(false);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').ne(120);
+                expect(query.matchesObject(books[0])).to.equal(true);
+                expect(query.matchesObject(books[1])).to.equal(true);
+                expect(query.matchesObject(books[2])).to.equal(false);
 
-                 query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').isNOTNULL();
-                 expect(query.matchesObject(books[0])).to.equal(true);
-                 expect(query.matchesObject(books[1])).to.equal(true);
-                 expect(query.matchesObject(books[2])).to.equal(true);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').isNULL();
+                expect(query.matchesObject(books[0])).to.equal(false);
+                expect(query.matchesObject(books[1])).to.equal(false);
+                expect(query.matchesObject(books[2])).to.equal(false);
 
-                 /*query = util.newQueryForBook(session);
-                 query.attr('numberOfPages').in(120, 150);
-                 expect(query.matchesObject(books[0])).to.equal(true);
-                 expect(query.matchesObject(books[1])).to.equal(false);
-                 expect(query.matchesObject(books[2])).to.equal(true);*/
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').isNOTNULL();
+                expect(query.matchesObject(books[0])).to.equal(true);
+                expect(query.matchesObject(books[1])).to.equal(true);
+                expect(query.matchesObject(books[2])).to.equal(true);
 
-                 query = util.newQueryForBook(session); //
-                 query.attr('numberOfPages').newComparision('', 'SOME_INVALID_OPERATOR_');
+                /*query = util.newQueryForBook(session);
+                query.attr('numberOfPages').in(120, 150);
+                expect(query.matchesObject(books[0])).to.equal(true);
+                expect(query.matchesObject(books[1])).to.equal(false);
+                expect(query.matchesObject(books[2])).to.equal(true);*/
+
+                query = util.newQueryForBook(session); //
+                query.attr('numberOfPages').newComparision('', 'SOME_INVALID_OPERATOR_');
 
                 (function () {
-                    query.matchesObject(books[0]);
+                query.matchesObject(books[0]);
                 }).should.Throw('Not expected to reach here.');
+            });
+        });
+    });
+
+    it('Logical Comparision Validity', function () {
+        util.newSession(function (err, session) {
+            var query = util.newQueryForBook(session);
+            query.enclose.attr('name').eq('Apatite').or.attr('name').eq('Learning Node.js');
+            query.and.enclose.attr('numberOfPages').eq(60).or.attr('numberOfPages').eq(70);
+            session.execute(query, function (err, booksFromDB) { // results only from database, cache is empty
+                expect(booksFromDB.length).to.equal(1);
+                expect(booksFromDB[0].name).to.equal('Apatite');
+
+                query = util.newQueryForBook(session);
+                query.enclose.attr('name').eq('Apatite').or.attr('name').eq('Learning Node.js');
+                query.and.enclose.attr('numberOfPages').eq(60).or.attr('numberOfPages').eq(70);
+                session.execute(query, function (err, booksFromCache) { // results from cache and database, as cache contains the object because it was loaded with earlier execute.
+                    expect(booksFromCache.length).to.equal(1);
+                    expect(booksFromCache[0].name).to.equal('Apatite');
+                });
+            });
+
+            session.clearCache();
+            query = util.newQueryForBook(session);
+            query.enclose.attr('name').eq('Apatite').and.attr('numberOfPages').eq(60);
+            query.or.enclose.attr('name').eq('Learning Node.js').and.attr('numberOfPages').eq(120);
+            session.execute(query, function (err, booksFromDB) { // results only from database, cache is empty
+                expect(booksFromDB.length).to.equal(2);
+                expect(booksFromDB[0].name).to.equal('Apatite');
+                expect(booksFromDB[1].name).to.equal('Learning Node.js');
+
+                query = util.newQueryForBook(session);
+                query.enclose.attr('name').eq('Apatite').and.attr('numberOfPages').eq(60);
+                query.or.enclose.attr('name').eq('Learning Node.js').and.attr('numberOfPages').eq(120);
+                session.execute(query, function (err, booksFromCache) { // results from cache and database, as cache contains the object because it was loaded with earlier execute.
+                    expect(booksFromCache.length).to.equal(2);
+                    expect(booksFromCache[0].name).to.equal('Apatite');
+                    expect(booksFromCache[1].name).to.equal('Learning Node.js');
+                });
+            });
+
+            session.clearCache();
+            query = util.newQueryForBook(session);
+            query.enclose.attr('name').eq('Apatite').and.attr('numberOfPages').eq(60);
+            query.or.enclose.attr('name').eq('Learning Node.js').and.attr('numberOfPages').eq(120);
+            query.or.enclose.attr('name').eq('Learn Javascript in 30 Days').and.attr('numberOfPages').eq(150);
+            session.execute(query, function (err, booksFromDB) { // results only from database, cache is empty
+                expect(booksFromDB.length).to.equal(3);
+                expect(booksFromDB[0].name).to.equal('Learn Javascript in 30 Days');
+                expect(booksFromDB[1].name).to.equal('Apatite');
+                expect(booksFromDB[2].name).to.equal('Learning Node.js');
+
+                query = util.newQueryForBook(session);
+                query.enclose.attr('name').eq('Apatite').and.attr('numberOfPages').eq(60);
+                query.or.enclose.attr('name').eq('Learning Node.js').and.attr('numberOfPages').eq(120);
+                query.or.enclose.attr('name').eq('Learn Javascript in 30 Days').and.attr('numberOfPages').eq(150);
+                session.execute(query, function (err, booksFromCache) { // results from cache and database, as cache contains the object because it was loaded with earlier execute.
+                    expect(booksFromCache.length).to.equal(3);
+                    expect(booksFromCache[0].name).to.equal('Learn Javascript in 30 Days');
+                    expect(booksFromCache[1].name).to.equal('Apatite');
+                    expect(booksFromCache[2].name).to.equal('Learning Node.js');
+                });
+            });
+
+            session.clearCache();
+            query = util.newQueryForBook(session);
+            query.enclose.attr('name').eq('Apatite X').and.attr('numberOfPages').eq(60);
+            query.or.enclose.attr('name').eq('Learning Node.js').and.attr('numberOfPages').eq(120);
+            query.or.enclose.attr('name').eq('Learn Javascript X in 30 Days').and.attr('numberOfPages').eq(150);
+            session.execute(query, function (err, booksFromDB) { // results only from database, cache is empty
+                expect(booksFromDB.length).to.equal(1);
+                expect(booksFromDB[0].name).to.equal('Learning Node.js');
+
+                query = util.newQueryForBook(session);
+                query.enclose.attr('name').eq('Apatite X').and.attr('numberOfPages').eq(60);
+                query.or.enclose.attr('name').eq('Learning Node.js').and.attr('numberOfPages').eq(120);
+                query.or.enclose.attr('name').eq('Learn Javascript X in 30 Days').and.attr('numberOfPages').eq(150);
+                session.execute(query, function (err, booksFromCache) { // results from cache and database, as cache contains the object because it was loaded with earlier execute.
+                    expect(booksFromCache.length).to.equal(1);
+                    expect(booksFromCache[0].name).to.equal('Learning Node.js');
+                });
+            });
+
+            session.clearCache();
+            query = util.newQueryForBook(session);
+            query.enclose.attr('name').eq('Apatite X').and.attr('numberOfPages').eq(60);
+            query.or.enclose.attr('name').eq('Learning X Node.js').and.attr('numberOfPages').eq(120);
+            query.or.enclose.attr('name').eq('Learn Javascript in 30 Days').and.attr('numberOfPages').eq(150);
+            session.execute(query, function (err, booksFromDB) { // results only from database, cache is empty
+                expect(booksFromDB.length).to.equal(1);
+                expect(booksFromDB[0].name).to.equal('Learn Javascript in 30 Days');
+
+                query = util.newQueryForBook(session);
+                query.enclose.attr('name').eq('Apatite X').and.attr('numberOfPages').eq(60);
+                query.or.enclose.attr('name').eq('Learning X Node.js').and.attr('numberOfPages').eq(120);
+                query.or.enclose.attr('name').eq('Learn Javascript in 30 Days').and.attr('numberOfPages').eq(150);
+                session.execute(query, function (err, booksFromCache) { // results from cache and database, as cache contains the object because it was loaded with earlier execute.
+                    expect(booksFromCache.length).to.equal(1);
+                    expect(booksFromCache[0].name).to.equal('Learn Javascript in 30 Days');
+                });
+            });
+
+            session.clearCache();
+            query = util.newQueryForBook(session);
+            query.attr('name').eq('Apatite').and.attr('numberOfPages').eq(60).and.attr('oid').eq(2);
+            session.execute(query, function (err, booksFromDB) { // results only from database, cache is empty
+                expect(booksFromDB.length).to.equal(1);
+                expect(booksFromDB[0].name).to.equal('Apatite');
+
+                query = util.newQueryForBook(session);
+                query.attr('name').eq('Apatite').and.attr('numberOfPages').eq(60).and.attr('oid').eq(2);
+                session.execute(query, function (err, booksFromCache) { // results from cache and database, as cache contains the object because it was loaded with earlier execute.
+                    expect(booksFromCache.length).to.equal(1);
+                    expect(booksFromCache[0].name).to.equal('Apatite');
+                });
             });
         });
     });
