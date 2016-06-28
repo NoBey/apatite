@@ -84,6 +84,13 @@ describe('ApatiteExpressionTest', function () {
                 (function () {
                     query.matchesObject(books[0]);
                 }).should.Throw('Not expected to reach here.');
+
+                query = util.newQueryForBook(session);
+
+                (function () {
+                    query.addConditionalOperatorExpression('SOME_INVALID_OPERATOR_');
+                    query.matchesObject(books[0]);
+                }).should.Throw('Not expected to reach here.');
             });
         });
     });
