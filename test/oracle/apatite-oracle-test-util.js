@@ -36,7 +36,7 @@ class ApatiteOracleTestUtil extends ApatiteTestUtil {
     }
 
     newApatite() {
-        return new Apatite(new ApatiteOracleDialect({ userName: 'hr', password: 'apatite', connectionInfo: 'localhost/xe' }));
+        return Apatite.forOracle({ userName: 'hr', password: 'apatite', connectionInfo: 'localhost/xe' });
     }
 
     existsModule() {
