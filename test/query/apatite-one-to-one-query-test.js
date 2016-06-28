@@ -16,15 +16,37 @@ describe('ApatiteOneToOneQueryTest', function () {
                 query = util.newQueryForEmployee(session);
                 query.attr('oid').gt(0).and;
                 query.enclose.attr('department').eq(departments[0]);
-                query.execute(function (err, employees) {
-                    expect(employees.length).to.equal(2);
-                    expect(employees[0]['name']).to.equal('Madhu');
-                    expect(employees[1]['name']).to.equal('Scot');
+                query.execute(function (err, firstDeptEmps) {
+                    expect(firstDeptEmps.length).to.equal(2);
+                    expect(firstDeptEmps[0]['name']).to.equal('Madhu');
+                    expect(firstDeptEmps[1]['name']).to.equal('Scot');
                 });
             });
         });
+
+        //make sure matchesObject is called on one to one proxies in both resolved and not resolved cases
+        util.newSession(function (err, session) {
+            var query = util.newQueryForEmployee(session);
+            query.execute(function (err, allEmployees) {
+                expect(allEmployees.length).to.equal(4);
+                allEmployees[0].department.getValue(function (dept) {
+                    query = util.newQueryForDepartment(session);
+                    query.execute(function(err, departments) {
+                        query = util.newQueryForEmployee(session);
+                        query.attr('oid').gt(0).and;
+                        query.enclose.attr('department').eq(departments[0]);
+                        query.execute(function (err, firstDeptEmps) {
+                            expect(firstDeptEmps.length).to.equal(2);
+                            expect(firstDeptEmps[0]['name']).to.equal('Madhu');
+                            expect(firstDeptEmps[1]['name']).to.equal('Scot');
+                        });
+                    });
+                })
+
+            });
+        });
     });
-    
+
     it('One To One Query Validity', function () {
         var util = new ApatiteTestUtil();
         var apatite = util.apatite;
