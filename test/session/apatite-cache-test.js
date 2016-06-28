@@ -122,6 +122,25 @@ describe('ApatiteCacheTest', function () {
                     });
                 });
             });
+
+            session.clearCache();
+            query = util.newQueryForPet(session);
+            session.execute(query, function (err, allPetsFromDB) {
+                expect(allPetsFromDB.length).to.equal(4);
+                // set some dummy values, so that we know that all the objects returned are from the cache and not from the DB
+                allPetsFromDB[0]['someProp'] = 'someValue0';
+                allPetsFromDB[1]['someProp'] = 'someValue1';
+                allPetsFromDB[2]['someProp'] = 'someValue2';
+                allPetsFromDB[3]['someProp'] = 'someValue3';
+                query = util.newQueryForPet(session);
+                session.execute(query, function (err, allPetsFromCache) {
+                    expect(allPetsFromCache.length).to.equal(4);
+                    expect(allPetsFromCache[0]['someProp']).to.equal('someValue0');
+                    expect(allPetsFromCache[1]['someProp']).to.equal('someValue1');
+                    expect(allPetsFromCache[2]['someProp']).to.equal('someValue2');
+                    expect(allPetsFromCache[3]['someProp']).to.equal('someValue3');
+                });
+            });
         });
     });
 

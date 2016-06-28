@@ -46,6 +46,12 @@ describe('ApatiteSimpleQueryTest', function () {
             }).should.Throw('A valid model is required for query.');
 
             var query = apatite.newQuery(User);
+            query.setSession(null);
+            query.execute(function(err, result){
+                expect(err.message).to.equal('There is no session associated with the query. Use execute on session.');
+            });
+
+            query = apatite.newQuery(User);
             query.setSession(session);
             var sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
@@ -141,26 +147,32 @@ describe('ApatiteSimpleQueryTest', function () {
 
             query = util.newQueryForBook(session);
             query.fetchSumAs('numberOfPages', 'sumOfPages');
-            query.execute(function (err, pagesSum) {
-                expect(pagesSum[0].sumOfPages).to.equal(330);
+            query.execute(function (err, result) {
+                expect(result[0].sumOfPages).to.equal(330);
             })
 
             query = util.newQueryForBook(session);
             query.fetchMaxAs('numberOfPages', 'maxOfPages');
-            query.execute(function (err, pagesSum) {
-                expect(pagesSum[0].maxOfPages).to.equal(150);
+            query.execute(function (err, result) {
+                expect(result[0].maxOfPages).to.equal(150);
             })
 
             query = util.newQueryForBook(session);
             query.fetchMinAs('numberOfPages', 'minOfPages');
-            query.execute(function (err, pagesSum) {
-                expect(pagesSum[0].minOfPages).to.equal(60);
+            query.execute(function (err, result) {
+                expect(result[0].minOfPages).to.equal(60);
             })
 
             query = util.newQueryForBook(session);
             query.fetchAvgAs('numberOfPages', 'avgOfPages');
-            query.execute(function (err, pagesSum) {
-                expect(pagesSum[0].avgOfPages).to.equal(110);
+            query.execute(function (err, result) {
+                expect(result[0].avgOfPages).to.equal(110);
+            })
+
+            query = util.newQueryForBook(session);
+            query.fetchDistinctAs('numberOfPages', 'distinctPages');
+            query.execute(function (err, result) {
+                expect(result[0].distinctPages).to.equal(150);
             })
         });
     })

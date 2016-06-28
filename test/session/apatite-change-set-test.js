@@ -197,8 +197,6 @@ describe('ApatiteChangeSetTest', function () {
                 newEmployee.name = 'SomeEmp';
                 newEmployee.department = allDepartments[0];
 
-                
-
                 var changesToDo = function (changesDone) {
                     department.employees.add(function () {
 
@@ -233,6 +231,25 @@ describe('ApatiteChangeSetTest', function () {
             });
         });
 
+        util.newSession(function (err, session) {
+            var query = util.newQueryForDepartment(session);
+            session.execute(query, function (err, allDepartments) {
+                var changesToDo = function (changesDone) {
+                    allDepartments[0].name = '';
+                    delete allDepartments[0].name;
+                    var statements = session.changeSet.buildUpdateStatements();
+                    expect(statements.length).to.equal(1);
+                    expect(statements[0].sqlString).to.equal('UPDATE DEPT SET NAME = ? WHERE OID = ?');
+                    expect(statements[0].bindings[0]).to.equal(null);
+                    expect(statements[0].bindings[1]).to.equal(1);
+                    changesDone();
+                }
+                var onSaved = function (err) {
+                }
+
+                session.doChangesAndSave(changesToDo, onSaved);
+            });
+        });
 
         util.newSession(function (err, session) {
             var department = util.newDepartment();

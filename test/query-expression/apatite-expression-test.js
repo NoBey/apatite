@@ -82,7 +82,7 @@ describe('ApatiteExpressionTest', function () {
                 query.attr('numberOfPages').newComparision('', 'SOME_INVALID_OPERATOR_');
 
                 (function () {
-                query.matchesObject(books[0]);
+                    query.matchesObject(books[0]);
                 }).should.Throw('Not expected to reach here.');
             });
         });

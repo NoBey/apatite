@@ -4,12 +4,30 @@ var should = require('chai').should();
 var expect = require('chai').expect;
 
 var ApatiteTestUtil = require('../apatite-test-util.js');
-var util = new ApatiteTestUtil();
-var apatite = util.apatite;
 
 
 describe('ApatiteOneToOneQueryTest', function () {
+    it('One To One Query Expr. Validity', function () {
+        var util = new ApatiteTestUtil();
+        var apatite = util.apatite;
+        util.newSession(function (err, session) {
+            var query = util.newQueryForDepartment(session);
+            query.execute(function(err, departments) {
+                query = util.newQueryForEmployee(session);
+                query.attr('oid').gt(0).and;
+                query.enclose.attr('department').eq(departments[0]);
+                query.execute(function (err, employees) {
+                    expect(employees.length).to.equal(2);
+                    expect(employees[0]['name']).to.equal('Madhu');
+                    expect(employees[1]['name']).to.equal('Scot');
+                });
+            });
+        });
+    });
+    
     it('One To One Query Validity', function () {
+        var util = new ApatiteTestUtil();
+        var apatite = util.apatite;
         util.autoRegisterModels = false;
         class Location {
             constructor() {
@@ -134,7 +152,7 @@ describe('ApatiteOneToOneQueryTest', function () {
                 expect(results[0]['name']).to.equal('Madhu');
                 expect(results[0]['location.name']).to.equal('First Floor');
                 expect(results[0]['secondaryLocation.name']).to.equal('First Floor');
-            })
+            });
 
             query = apatite.newQuery(Employee).attr('department.oid').eq(0);
             query.setSession(session);

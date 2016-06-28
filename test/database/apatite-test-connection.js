@@ -65,6 +65,7 @@ class ApatiteTestConnection extends ApatiteConnection {
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NUMBEROFPAGES IN ?[120,150]': [this.bookRecords[0], this.bookRecords[2]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME IS NULL': [],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME IS NOT NULL': this.bookRecords,
+            'SELECT DISTINCT(T1.NUMBEROFPAGES) AS "distinctPages" FROM BOOK T1': [{distinctPages: this.bookRecords[0]['T1.NUMBEROFPAGES']}, {distinctPages: this.bookRecords[1]['T1.NUMBEROFPAGES']}, {distinctPages: this.bookRecords[2]['T1.NUMBEROFPAGES']}],
             'SELECT AVG(T1.NUMBEROFPAGES) AS "avgOfPages" FROM BOOK T1': [{avgOfPages: this.booksSumResult['T1.NUMBEROFPAGES'] / this.bookRecords.length}],
             'SELECT MIN(T1.NUMBEROFPAGES) AS "minOfPages" FROM BOOK T1': [{minOfPages: this.minBookPagesResult}],
             'SELECT MAX(T1.NUMBEROFPAGES) AS "maxOfPages" FROM BOOK T1': [{maxOfPages: this.maxBookPagesResult}],
@@ -102,7 +103,8 @@ class ApatiteTestConnection extends ApatiteConnection {
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?3': [this.departmentRecords[2]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME1': [this.employeeRecords[0], this.employeeRecords[3]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME2': [this.employeeRecords[1]],
-            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME3': [this.employeeRecords[2]]
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME3': [this.employeeRecords[2]],
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.OID > ? AND ( ( T1.DEPTOID = ? ) )01': [this.employeeRecords[0], this.employeeRecords[3]]
         };
     }
 

@@ -72,8 +72,18 @@ describe('ApatiteTest', function() {
             apatite.registerModelDescriptor(apatite.newModelDescriptor(User, apatite.newTable('USERS')));
         }).should.Throw('Model User already registered.');
         
+        var descriptor = apatite.registeredDescriptors['User'];
+        expect(descriptor.model).to.equal(User);
         
-        expect(apatite.registeredDescriptors['User'].model).to.equal(User);
+        var column = descriptor.table.addNewColumn('OID', apatite.dialect.newIntegerType(10));
+        column.bePrimaryKey();
+        var mapping = descriptor.newSimpleMapping('oid', column);
+        expect(descriptor.getModelDescriptor(mapping)).to.equal(descriptor);
+        mapping.column = null;
+        (function () {
+            descriptor.findOwnColumnForAttribute('oid');
+        }).should.Throw('Could not find column for attribute: oid from model: User.');
+
     });
     it('Dialect Validity', function () {
         var Apatite = require('../lib/apatite');
