@@ -10,8 +10,7 @@ class Pet {
         var table = apatite.newTable('PET');
         var modelDescriptor = apatite.newModelDescriptor(Pet, table);
 
-        var column = table.addNewColumn('OID', apatite.dialect.newSerialType());
-        column.bePrimaryKey();
+        var column = table.addNewPrimaryKeyColumn('OID', apatite.dialect.newSerialType());
         modelDescriptor.newSimpleMapping('oid', column);
 
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));
