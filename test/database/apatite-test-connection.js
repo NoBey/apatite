@@ -137,9 +137,11 @@ class ApatiteTestConnection extends ApatiteConnection {
         this.sqlCount++;
         var key = sqlStr + bindings.join('');
         var result = this.sqlResults[key];
-        if (sqlStr.indexOf('SELECT') === 0)
+        if (sqlStr.indexOf('SELECT') === 0) {
             if (!result)
                 throw new Error('SQL not defined: ' + key);
+        } else if ((sqlStr === 'UPDATE PET SET NAME = ? WHERE OID = ?') && (bindings[0] === 'DogXXXXXXXXXXXXXXX'))
+            return onExecuted(new Error('Update statement failed.'));
 
         onExecuted(null, result);
     }

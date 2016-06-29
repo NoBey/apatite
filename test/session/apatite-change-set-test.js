@@ -100,19 +100,17 @@ describe('ApatiteChangeSetTest', function () {
                 var dog = allPets[0];
                 expect(dog.name).to.equal('Dog');
 
-                session.startTrackingChanges();
-                dog.name = 'DogX';
-                expect(dog.name).to.equal('DogX');
+                var changesToDo = function (changesDone) {
+                    dog.name = 'DogXXXXXXXXXXXXXXX';
+                    changesDone(null);
+                };
 
-                session.rollbackChanges();
-                expect(dog.name).to.equal('Dog');
+                var onSaved = function (err) {
+                    expect(err.message).to.equal('Update statement failed.');
+                    expect(dog.name).to.equal('Dog'); // all changes must be rolled back
+                }
 
-                session.startTrackingChanges();
-                dog.name = 'DogX';
-
-                var statements = session.changeSet.buildUpdateStatements();
-                expect(statements.length).to.equal(1);
-                expect(statements[0].sqlString).to.equal('UPDATE PET SET NAME = ? WHERE OID = ?');
+                session.doChangesAndSave(changesToDo, onSaved);
             });
         });
         
