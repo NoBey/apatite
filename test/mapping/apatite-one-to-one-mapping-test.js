@@ -41,7 +41,8 @@ describe('ApatiteOneToOneMappingTest', function () {
         var locTable = apatite.getOrCreateTable('LOCATION');
         var locColumn = locTable.getColumn('OID');
         
-        modelDescriptor.newOneToOneMapping('location', null, [column], [locColumn]);
+        var locMapping = modelDescriptor.newOneToOneMapping('location', null, [column], [locColumn]);
+        expect(locMapping.isSimpleMapping()).to.equal(false);
         
         apatite.newSession(function (err, session) {
             expect(err.message).to.equal('Invalid one-to-one mapping. Model name not defined for attribute: location.')
