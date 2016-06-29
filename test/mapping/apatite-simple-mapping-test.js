@@ -32,5 +32,11 @@ describe('ApatiteSimpleMappingTest', function() {
         
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));
         modelDescriptor.newSimpleMapping('name', column);
+
+        column = table.addNewColumn('FOO', apatite.dialect.newVarCharType(100));
+        
+        (function () {
+            modelDescriptor.newSimpleMapping(null, column);
+        }).should.Throw('Invalid attribute name.');
     })
 })
