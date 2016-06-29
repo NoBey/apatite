@@ -24,12 +24,13 @@ describe('ApatiteOneToOneQueryTest', function () {
             });
         });
 
+
         //make sure matchesObject is called on one to one proxies in both resolved and not resolved cases
         util.newSession(function (err, session) {
             var query = util.newQueryForEmployee(session);
             query.execute(function (err, allEmployees) {
                 expect(allEmployees.length).to.equal(4);
-                allEmployees[0].department.getValue(function (dept) {
+                allEmployees[0].department.getValue(function (dept) {//resolve proxy for first employee, the rest employees proxy would not be resolved.
                     query = util.newQueryForDepartment(session);
                     query.execute(function(err, departments) {
                         query = util.newQueryForEmployee(session);
@@ -43,6 +44,21 @@ describe('ApatiteOneToOneQueryTest', function () {
                     });
                 })
 
+            });
+        });
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPerson(session);
+            query.execute(function (err, people) {
+                expect(people.length).to.equal(3); // all people are now in cache
+                people[0].pet.getValue(function (pet) {//resolve proxy for first person, for the rest pet proxy would not be resolved.
+                    expect(pet).to.eq(null);
+                    query = util.newQueryForPerson(session);
+                    query.attr('oid').gt(0).and;
+                    query.enclose.attr('pet').eq(null);
+                    query.execute(function(err, result) {
+                        expect(result.length).to.equal(3);
+                    });
+                });
             });
         });
     });

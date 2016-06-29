@@ -78,6 +78,7 @@ class ApatiteTestConnection extends ApatiteConnection {
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.QUANTITY AS "T1.QUANTITY" FROM PRODUCT T1': this.productRecords,
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.AGE AS "T1.AGE" FROM PET T1': this.petRecords2,
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.PETOID AS "T1.PETOID" FROM PERSON T1': this.personRecords,
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.PETOID AS "T1.PETOID" FROM PERSON T1 WHERE T1.OID > ? AND ( ( T1.PETOID = ? ) )0': this.personRecords, 
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.OID = ?': [],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.OID = ?1': [this.petRecords[0]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE T1.OID = ?2': [this.petRecords[1]],
