@@ -101,10 +101,8 @@ class ApatiteTestConnection extends ApatiteConnection {
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1': this.employeeRecords,
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?1': [this.departmentRecords[0]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?2': [this.departmentRecords[1]],
-            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?3': [this.departmentRecords[2]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME1': [this.employeeRecords[0], this.employeeRecords[3]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME2': [this.employeeRecords[1]],
-            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME3': [this.employeeRecords[2]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.OID > ? AND ( ( T1.DEPTOID = ? ) )01': [this.employeeRecords[0], this.employeeRecords[3]]
         };
     }
@@ -138,7 +136,11 @@ class ApatiteTestConnection extends ApatiteConnection {
         var key = sqlStr + bindings.join('');
         var result = this.sqlResults[key];
         if (sqlStr.indexOf('SELECT') === 0) {
-            if (!result)
+            if (key === 'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME3')
+                return onExecuted(new Error('Select statement failed.'));
+            else if (key === 'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?3')
+                return onExecuted(new Error('Select statement failed.'));
+            else if (!result)
                 throw new Error('SQL not defined: ' + key);
         } else if ((sqlStr === 'UPDATE PET SET NAME = ? WHERE OID = ?') && (bindings[0] === 'DogXXXXXXXXXXXXXXX'))
             return onExecuted(new Error('Update statement failed.'));

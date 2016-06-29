@@ -113,6 +113,23 @@ describe('ApatiteChangeSetTest', function () {
                 session.doChangesAndSave(changesToDo, onSaved);
             });
         });
+
+        util.newSession(function (err, session) {
+            var query = util.newQueryForDepartment(session);
+            session.execute(query, function (err, departments) {
+
+                var changesToDo = function (changesDone) {
+                    session.registerDelete(departments[2]);
+                    changesDone(null);
+                };
+
+                var onSaved = function (err) {
+                    expect(err.message).to.equal('Select statement failed.'); // error while cascading the children
+                }
+
+                session.doChangesAndSave(changesToDo, onSaved);
+            });
+        });
         
         util.newSession(function (err, session) {
             var query = util.newQueryForPet(session);
@@ -139,11 +156,15 @@ describe('ApatiteChangeSetTest', function () {
                     session.startTrackingChanges();
                     people[0].name = 'Owner';
                     people[0].name = 'Owner2'; // Setting attribute more than once should always take the current value
+                    allPets[0].name = 'PetX';
 
                     var statements = session.changeSet.buildUpdateStatements();
-                    expect(statements.length).to.equal(1);
-                    expect(statements[0].sqlString).to.equal('UPDATE PERSON SET NAME = ? WHERE OID = ?');
-                    expect(statements[0].bindings[0]).to.equal('Owner2');
+                    expect(statements.length).to.equal(2);
+                    expect(statements[0].sqlString).to.equal('UPDATE PET SET NAME = ? WHERE OID = ?'); // even though the attribute of person has been first set, the update is issued for pet first becuase of the table sort order
+                    expect(statements[0].bindings[0]).to.equal('PetX');
+                    expect(statements[1].sqlString).to.equal('UPDATE PERSON SET NAME = ? WHERE OID = ?');
+                    expect(statements[1].bindings[0]).to.equal('Owner2');
+                    
                 }
                 session.doChangesAndSave(changesToDo, onSaved);
             });       

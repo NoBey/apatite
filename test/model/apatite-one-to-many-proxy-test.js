@@ -34,5 +34,35 @@ describe('ApatiteOneToManyProxyTest', function () {
                 });
             });
         });
+
+        util.newSession(function (err, session) {
+            var query = util.newQueryForDepartment(session);
+            session.execute(query, function (err, departments) {
+
+                departments[2].employees.getValue(function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                });
+
+                departments[2].employees.getLength(function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                });
+
+                departments[2].employees.indexOf(null, function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                });
+
+                departments[2].employees.add(function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                }, null);
+
+                departments[2].employees.remove(function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                }, null);
+
+                departments[2].employees.removeAll(function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                });
+            });
+        });
     });
 })
