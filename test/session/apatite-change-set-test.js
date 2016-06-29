@@ -140,10 +140,12 @@ describe('ApatiteChangeSetTest', function () {
 
                     session.startTrackingChanges();
                     people[0].name = 'Owner';
+                    people[0].name = 'Owner2'; // Setting attribute more than once should always take the current value
 
                     var statements = session.changeSet.buildUpdateStatements();
                     expect(statements.length).to.equal(1);
                     expect(statements[0].sqlString).to.equal('UPDATE PERSON SET NAME = ? WHERE OID = ?');
+                    expect(statements[0].bindings[0]).to.equal('Owner2');
                 }
                 session.doChangesAndSave(changesToDo, onSaved);
             });       
