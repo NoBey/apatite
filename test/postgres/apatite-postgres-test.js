@@ -1,7 +1,6 @@
-﻿var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
-var util = new ApatitePostgresTestUtil();
-
-describe('ApatitePostgresTest', function () {
+﻿describe('ApatitePostgresTest', function () {
+    var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
+    var util = new ApatitePostgresTestUtil();
     if (util.existsModule()) {
         var helper = require('../apatite-dialect-test-helper.js');
         var session = null;
@@ -20,6 +19,8 @@ describe('ApatitePostgresTest', function () {
 })
 
 describe('ApatitePostgresPoolTest', function () {
+    var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
+    var util = new ApatitePostgresTestUtil();
     if (util.existsModule()) {
         var helper = require('../apatite-dialect-pool-test-helper.js');
         var session = null;

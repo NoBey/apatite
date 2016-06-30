@@ -1,7 +1,6 @@
-﻿var ApatiteOracleTestUtil = require('./apatite-oracle-test-util');
-var util = new ApatiteOracleTestUtil();
-
-describe('ApatiteOracleTest', function () {
+﻿describe('ApatiteOracleTest', function () {
+    var ApatiteOracleTestUtil = require('./apatite-oracle-test-util');
+    var util = new ApatiteOracleTestUtil();
     if (util.existsModule()) {
         var helper = require('../apatite-dialect-test-helper.js');
         var session = null;
@@ -20,6 +19,8 @@ describe('ApatiteOracleTest', function () {
 })
 
 describe('ApatiteOraclePoolTest', function () {
+    var ApatiteOracleTestUtil = require('./apatite-oracle-test-util');
+    var util = new ApatiteOracleTestUtil();
     if (util.existsModule()) {
         var helper = require('../apatite-dialect-pool-test-helper.js');
         var session = null;

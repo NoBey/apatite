@@ -35,6 +35,7 @@ describe('ApatiteOneToOneProxyTest', function () {
                         expect(employee.department).to.not.equal(null);
                         expect(employee.department.valueFetched).to.equal(true);
                     };
+                    session.doChangesAndSave(changesToDo, onSaved);
                 })
             });
         });

@@ -22,6 +22,7 @@ class ApatiteTestUtil {
     constructor() {
         this.apatite = this.newApatite();
         this.autoRegisterModels = true;
+        this.modelsRegistered = false;
     }
 
     newApatite() {
@@ -30,6 +31,9 @@ class ApatiteTestUtil {
 
     registerTestModels() {
         if (!this.autoRegisterModels)
+            return;
+
+        if (this.modelsRegistered)
             return;
 
         this.apatite.registerModel(Department);
@@ -45,6 +49,7 @@ class ApatiteTestUtil {
         this.apatite.registerModel(Product);
 
         this.apatite.registerModel(Book);
+        this.modelsRegistered = true;
     }
 
     newPet() {

@@ -51,6 +51,10 @@ describe('ApatiteOneToManyProxyTest', function () {
                     expect(err.message).to.equal('Select statement failed.');
                 });
 
+                departments[2].employees.getAtIndex(1, function (err, employees) {
+                    expect(err.message).to.equal('Select statement failed.');
+                });
+
                 departments[2].employees.add(function (err, employees) {
                     expect(err.message).to.equal('Select statement failed.');
                 }, null);
