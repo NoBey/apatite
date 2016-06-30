@@ -35,6 +35,18 @@ class ApatiteOracleTestUtil extends ApatiteTestUtil {
         ];
     }
 
+    getCreateTableStatementsForPool() {
+        return [
+            new ApatiteSQLStatement(null, 'CREATE TABLE TEMPPOOL (OID NUMBER (10))', [])
+        ];
+    }
+
+    getDropTableStatementsForPool() {
+        return [
+            new ApatiteSQLStatement(null, 'DROP TABLE TEMPPOOL CASCADE CONSTRAINTS', [])
+        ];
+    }
+
     newApatite() {
         return new Apatite(new ApatiteOracleDialect({ userName: 'hr', password: 'apatite', connectionInfo: 'localhost/xe' }));
     }

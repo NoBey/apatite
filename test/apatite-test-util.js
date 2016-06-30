@@ -29,6 +29,10 @@ class ApatiteTestUtil {
         return new Apatite(new ApatiteTestDialect({ userName: 'apatite', password: 'test' }));
     }
 
+    createNewApaite() {
+        this.apatite = this.newApatite();
+    }
+
     registerTestModels() {
         if (!this.autoRegisterModels)
             return;
@@ -117,10 +121,26 @@ class ApatiteTestUtil {
         });
     }
 
+
+    createTestTablesForPool(onTablesCreated) {
+        this.basicCreateTestTables(onTablesCreated, this.getCreateTableStatementsForPool());
+    }
+
+    deleteTestTablesForPool(onTablesCreated) {
+        this.basicDeleteTestTables(onTablesCreated, this.getDropTableStatementsForPool());
+    }
+
     createTestTables(onTablesCreated) {
-        var self = this;
+        this.basicCreateTestTables(onTablesCreated, this.getCreateTableStatements());
+    }
+
+    deleteTestTables(onTablesCreated) {
+        this.basicDeleteTestTables(onTablesCreated, this.getDropTableStatements());
+    }
+
+    basicCreateTestTables(onTablesCreated, statements) {
         this.newSession(function (err, session) {
-            session.connection.executeStatements(self.getCreateTableStatements(), function (err, result) {
+            session.connection.executeStatements(statements, function (err, result) {
                 if (err) {
                     onTablesCreated(err);
                     return;
@@ -132,10 +152,11 @@ class ApatiteTestUtil {
         });
     }
 
-    deleteTestTables(onTablesDropped) {
-        var self = this;
+
+
+    basicDeleteTestTables(onTablesDropped, statements) {
         this.newSession(function (err, session) {
-            session.connection.executeStatements(self.getDropTableStatements(), function (err, result) {
+            session.connection.executeStatements(statements, function (err, result) {
                 if (err) {
                     onTablesDropped(err);
                     return;

@@ -33,6 +33,18 @@ class ApatitePostgresTestUtil extends ApatiteTestUtil {
         ];
     }
 
+    getCreateTableStatementsForPool() {
+        return [
+            new ApatiteSQLStatement(null, 'CREATE TABLE public.temppool(oid integer) WITH (OIDS=FALSE)', [])
+        ];
+    }
+
+    getDropTableStatementsForPool() {
+        return [
+            new ApatiteSQLStatement(null, 'DROP TABLE public.temppool', [])
+        ];
+    }
+
     newApatite() {
         return new Apatite(new ApatitePostgresDialect({ userName: 'postgres', password: '', connectionInfo: 'localhost/apatite' }));
     }

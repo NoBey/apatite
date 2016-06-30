@@ -17,27 +17,7 @@ module.exports.setUp = function (done, util, onSetupFinished) {
             });
         });
     });
-    /*util.createTestTables(function (err) {
-        expect(err).to.not.exist;
-            util.newSession(function (sessErr, sess) {
-                expect(sessErr).to.not.exist;
-                onSetupFinished(sess);
-                done();
-            });
-        
-        var connOptions = util.apatite.dialect.connectionOptions;
-        var oriUserName = connOptions.userName;
-        connOptions.userName = 'foo and bar';
-        util.newSession(function (invalidSessionErr, invalidSession) {
-            expect(invalidSessionErr).to.exist;
-            connOptions.userName = oriUserName;
-            util.newSession(function (sessErr, sess) {
-                expect(sessErr).to.not.exist;
-                onSetupFinished(sess);
-                done();
-            });
-        });
-    });*/
+
 }
 
 module.exports.tearDown = function (done, util, session) {
