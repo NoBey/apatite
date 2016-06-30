@@ -11,8 +11,8 @@ Object persistence framework for Node.js.
 ## Prerequisites
 
   * Node version >=6.1.0. ES6 classes and few other features are required.
-  * [oracledb](https://github.com/oracle/node-oracledb) if you plan to use Oracle
-  * [pg](https://github.com/brianc/node-postgres) if you plan to use Postgres
+  * [oracledb](https://github.com/oracle/node-oracledb) if you plan to use Oracle: $ npm install oracledb@1.9.3
+  * [pg](https://github.com/brianc/node-postgres) if you plan to use Postgres: $ npm install pg@5.1.0
 
 ## Installation
 
