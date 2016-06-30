@@ -8,9 +8,8 @@ services:
 before_script:
  - psql -c 'drop database if exists apatite;' -U postgres
  - psql -c 'create database apatite;' -U postgres
- - npm install pg@5.1.0
- - npm install pg-pool@1.1.0
-
+ - npm install pg@6.0.0
+ 
 addons:
  postgresql: "9.4"
 
