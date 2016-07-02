@@ -16,23 +16,22 @@ describe('ApatiteSessionTest', function () {
             };
             session.doChangesAndSave(changesToDo, onChangesSaved);
 
-            var changesToDo = function (changesDone) {
+            changesToDo = function (changesDone) {
                 changesDone();
             };
-            var onChangesSaved = function (err) {
+            onChangesSaved = function (err) {
+                expect(err.message).to.equal('Previous changes have not been saved. Probably the callback done() of changesToDo parameter of method doChangesAndSave(changesToDo, onChangesSaved) is not called.');
             };
-            (function () {
-                session.doChangesAndSave(changesToDo, onChangesSaved);
-            }).should.Throw('Previous changes have not been saved. Probably the callback done() of changesToDo parameter of method doChangesAndSave(changesToDo, onChangesSaved) is not called.');
+            session.doChangesAndSave(changesToDo, onChangesSaved);
 
         });
 
         util.newSession(function (err, session) {
             var changesToDo = function (changesDone) {
-                changesDone('Something went wrong while doing changes!');
+                changesDone(new Error('Something went wrong while doing changes!'));
             };
             var onChangesSaved = function (err) {
-                expect(err).to.equal('Something went wrong while doing changes!');
+                expect(err.message).to.equal('Something went wrong while doing changes!');
             };
             session.doChangesAndSave(changesToDo, onChangesSaved);
         });
