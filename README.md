@@ -111,14 +111,13 @@ $ npm install apatite
 		}
 		var query = session.newQuery(Department);
 		var promise = query.execute();
-		promise.then(function(err, departments) {
-			if (err) {
-				console.error(err.message);
-				return;
-			}
+		promise.then(function(departments) {
 			console.log(JSON.stringify(departments));
 			if (departments.length)
 				departments[0].printName();
+			endSession(session);
+		}, function(err) {
+			console.error(err.message);
 			endSession(session);
 		});
 	});
