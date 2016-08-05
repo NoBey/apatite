@@ -140,13 +140,13 @@ class ApatiteTestConnection extends ApatiteConnection {
                 // setTimeout required for promise (one to one proxy) tests
                 setTimeout(function () {
                     onExecuted(new Error('Select statement failed.'));
-                }, 100);
+                }, 500);
                 return;
             } else if (key === 'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?3') {
                 // setTimeout required for promise (one to one proxy) tests
                 setTimeout(function () {
                     onExecuted(new Error('Select statement failed.'));
-                }, 100);
+                }, 500);
                 return;
             } else if (!result)
                 throw new Error('SQL not defined: ' + key);
