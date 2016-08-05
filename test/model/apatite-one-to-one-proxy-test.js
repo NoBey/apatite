@@ -62,5 +62,36 @@ describe('ApatiteOneToOneProxyTest', function () {
                 });
             });
         });
+
+
+        util.newSession(function (err, session) {
+            var query = util.newQueryForEmployee(session);
+            session.execute(query, function (err, employees) {
+                var proxy = employees[0].department;
+                expect(proxy.valueFetched).to.equal(false);
+                var promise = proxy.getValue();
+                promise.then(function (department) {
+                    expect(proxy.valueFetched).to.equal(true);
+                }, function (err) {
+                    expect(err).to.not.exist;
+                })
+            });
+        });
+
+
+        util.newSession(function (err, session) {
+            var query = util.newQueryForEmployee(session);
+            session.execute(query, function (err, employees) {
+                var proxy = employees[2].department;
+                expect(proxy.valueFetched).to.equal(false);
+                var promise = proxy.getValue();
+                promise.then(function (department) {
+                    //should never reach here...
+                    expect(false).to.equal(true);
+                }, function (err) {
+                    expect(err.message).to.equal('Select statement failed.');
+                })
+            });
+        });
     });
 })

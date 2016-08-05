@@ -138,9 +138,13 @@ class ApatiteTestConnection extends ApatiteConnection {
         if (sqlStr.indexOf('SELECT') === 0) {
             if (key === 'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID" FROM EMP T1 WHERE T1.DEPTOID = ? ORDER BY T1.NAME3')
                 return onExecuted(new Error('Select statement failed.'));
-            else if (key === 'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?3')
-                return onExecuted(new Error('Select statement failed.'));
-            else if (!result)
+            else if (key === 'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID = ?3') {
+                // setTimout equired for promise (one to one proxy) tests
+                setTimeout(function () {
+                    onExecuted(new Error('Select statement failed.'));
+                }, 100);
+                return;
+            } else if (!result)
                 throw new Error('SQL not defined: ' + key);
         } else if ((sqlStr === 'UPDATE PET SET NAME = ? WHERE OID = ?') && (bindings[0] === 'DogXXXXXXXXXXXXXXX'))
             return onExecuted(new Error('Update statement failed.'));
