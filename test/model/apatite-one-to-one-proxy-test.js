@@ -72,6 +72,10 @@ describe('ApatiteOneToOneProxyTest', function () {
                 var promise = proxy.getValue();
                 promise.then(function (department) {
                     expect(proxy.valueFetched).to.equal(true);
+                    promise = proxy.getValue(); // a resolved promise should be returned
+                    promise.then(function (dept){
+                        expect(proxy.valueFetched).to.equal(true);
+                    });
                 }, function (err) {
                     expect(err).to.not.exist;
                 })
