@@ -41,6 +41,13 @@ describe('ApatiteSimpleQueryTest', function () {
                 expect(err.message).to.equal('Descriptor for model: InvalidModel not found.');
             });
 
+            // test with promise
+            qry = apatite.newQuery(InvalidModel);
+            var promise = session.execute(qry);
+            promise.catch(function (err) {
+                expect(err.message).to.equal('Descriptor for model: InvalidModel not found.');
+            });
+
             (function () {
                 apatite.newQuery();
             }).should.Throw('A valid model is required for query.');
@@ -50,6 +57,16 @@ describe('ApatiteSimpleQueryTest', function () {
             query.execute(function(err, result){
                 expect(err.message).to.equal('There is no session associated with the query. Use execute on session.');
             });
+
+            // test with promise
+            query = apatite.newQuery(User);
+            query.setSession(null);
+            promise = query.execute();
+            promise.catch(function (err) {
+                expect(err.message).to.equal('There is no session associated with the query. Use execute on session.');
+            });
+
+            
 
             query = apatite.newQuery(User);
             query.setSession(session);
@@ -174,6 +191,42 @@ describe('ApatiteSimpleQueryTest', function () {
             query.execute(function (err, result) {
                 expect(result[0].distinctPages).to.equal(150);
             })
+        });
+
+        // tests with promise for direct query execution
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPet(session);
+            query.fetchCountAs('countOfPets');
+            var promise = query.execute();
+            promise.then(function (petsCount) {
+                expect(petsCount[0].countOfPets).to.equal(4);
+            });
+
+            query = util.newQueryForEmployee(session);
+            query.attr('department.oid').eq(3);
+            query.orderBy('name');
+            promise = query.execute();
+            promise.catch(function (sqlErr) {
+                expect(sqlErr.message).to.equal('Select statement failed.');
+            });
+        });
+
+        // tests with promise for query execution over session
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPet(session);
+            query.fetchCountAs('countOfPets');
+            var promise = session.execute(query);
+            promise.then(function (petsCount) {
+                expect(petsCount[0].countOfPets).to.equal(4);
+            });
+
+            query = util.newQueryForEmployee(session);
+            query.attr('department.oid').eq(3);
+            query.orderBy('name');
+            promise = session.execute(query);
+            promise.catch(function (sqlErr) {
+                expect(sqlErr.message).to.equal('Select statement failed.');
+            });
         });
     })
 })

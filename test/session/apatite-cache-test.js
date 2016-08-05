@@ -141,6 +141,20 @@ describe('ApatiteCacheTest', function () {
                     expect(allPetsFromCache[3]['someProp']).to.equal('someValue3');
                 });
             });
+
+            session.clearCache();
+            //test load from cache with promise
+            query = util.newQueryForPet(session);
+            query.attr('oid').eq(1);
+            expect(session.findObjectInCache('Pet', '1')).to.not.exist;
+            var promise = session.execute(query); // load pet with oid 1
+            promise.then(function (pet) {
+                expect(session.findObjectInCache('Pet', '1')).to.exist;
+                promise = session.execute(query); // should get the object from cache
+                promise.then(function (petFromCache) {
+                    
+                });
+            });
         });
     });
 
