@@ -101,6 +101,37 @@ $ npm install apatite
 	}
 	```
 
+	```js
+	// Using promise to execute queries
+	// Creates a new session and database connection
+	apatite.newSession(function (err, session) {
+		if (err) {
+			console.error(err.message);
+			return;
+		}
+		var query = session.newQuery(Department);
+		var promise = query.execute();
+		promise.then(function(err, departments) {
+			if (err) {
+				console.error(err.message);
+				return;
+			}
+			console.log(JSON.stringify(departments));
+			if (departments.length)
+				departments[0].printName();
+			endSession(session);
+		});
+	});
+
+	//closes the database connection
+	function endSession(session) {
+		session.end(function(err) {
+			if (err)
+				console.error(err.message);
+		})
+	}
+	```
+
 5. Do changes to your objects and save.
 
 	```js
