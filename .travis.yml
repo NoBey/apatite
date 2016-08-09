@@ -2,6 +2,9 @@ language: node_js
 node_js:
  - "6.1.0"
 
+dist: trusty
+sudo: required
+
 services:
  - postgresql
 
@@ -9,9 +12,19 @@ before_script:
  - psql -c 'drop database if exists apatite;' -U postgres
  - psql -c 'create database apatite;' -U postgres
  - npm install pg@6.0.0
- 
+ - mysql -e "drop database if exists apatite;" -uroot
+ - mysql -e "create database IF NOT EXISTS apatite;" -uroot
+ - mysql -e "CREATE USER 'apatite'@'localhost' IDENTIFIED BY 'apatite';" -uroot
+ - mysql -e "GRANT ALL PRIVILEGES ON apatite.* TO 'apatite'@'localhost' WITH GRANT OPTION;" -uroot
+ - npm install mysql@2.11.1
+
 addons:
  postgresql: "9.4"
+ apt:
+  packages:
+   - mysql-server-5.6
+   - mysql-client-core-5.6
+   - mysql-client-5.6
 
 after_success:
 - npm install istanbul@0.4.4
