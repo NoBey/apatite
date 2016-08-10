@@ -12,6 +12,7 @@ Object persistence framework for Node.js.
   * Node version >=6.1.0. ES6 classes and few other features are required.
   * [oracledb](https://github.com/oracle/node-oracledb) if you plan to use Oracle: $ npm install oracledb@1.9.3
   * [pg](https://github.com/brianc/node-postgres) if you plan to use Postgres: $ npm install pg@6.0.0
+  * [mysql](https://github.com/mysqljs/mysql) if you plan to use Mysql: $ npm install mysql@2.11.1
 
 ## Installation
 
@@ -64,6 +65,12 @@ $ npm install apatite
 	// Postgres
 	var connOptions = { userName: 'apatite', password: 'apatite', connectionInfo: 'localhost/apatite' };
 	var apatite = require('apatite').forPostgres(connOptions);
+	```
+
+	```js
+	// Mysql
+	var connOptions = { userName: 'apatite', password: 'apatite', connectionInfo: 'localhost/apatite' };
+	var apatite = require('apatite').forMysql(connOptions);
 	```
 
 	```js
