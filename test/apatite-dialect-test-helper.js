@@ -35,6 +35,7 @@ module.exports.testFunction = function (done, session, util) {
     var query = util.newQueryForDepartment(session);
     var sqlOptions = { isApatiteDirectSql: true, resultSet: true };
     session.execute(query, function (err, departments) {
+        console.log(err);
         expect(departments.length).to.equal(0);
 
         var newDepartment = util.newDepartment();
