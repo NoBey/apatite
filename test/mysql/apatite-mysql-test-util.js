@@ -13,15 +13,15 @@ class ApatiteMysqlTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatements() {
         return [
-            new ApatiteSQLStatement(null, "CREATE TABLE `apatite`.`dept` (`oid` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(50) NULL, PRIMARY KEY (`oid`), UNIQUE INDEX `oid_UNIQUE` (`oid` ASC))", []),
-            new ApatiteSQLStatement(null, "CREATE TABLE `apatite`.`emp` (`oid` INT NOT NULL AUTO_INCREMENT,`name` VARCHAR(100) NULL, `deptoid` INT NULL, PRIMARY KEY (`oid`), UNIQUE INDEX `oid_UNIQUE` (`oid` ASC))", [])
+            new ApatiteSQLStatement(null, "CREATE TABLE `apatite`.`DEPT` (`oid` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(50) NULL, PRIMARY KEY (`oid`), UNIQUE INDEX `oid_UNIQUE` (`oid` ASC))", []),
+            new ApatiteSQLStatement(null, "CREATE TABLE `apatite`.`EMP` (`oid` INT NOT NULL AUTO_INCREMENT,`name` VARCHAR(100) NULL, `deptoid` INT NULL, PRIMARY KEY (`oid`), UNIQUE INDEX `oid_UNIQUE` (`oid` ASC))", [])
         ];
     }
 
     getDropTableStatements() {
         return [
-            new ApatiteSQLStatement(null, 'DROP TABLE `apatite`.`dept`', []),
-            new ApatiteSQLStatement(null, 'DROP TABLE `apatite`.`emp`', [])
+            new ApatiteSQLStatement(null, 'DROP TABLE `apatite`.`DEPT`', []),
+            new ApatiteSQLStatement(null, 'DROP TABLE `apatite`.`EMP`', [])
         ];
     }
 
