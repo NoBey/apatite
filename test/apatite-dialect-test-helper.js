@@ -56,7 +56,7 @@ module.exports.testFunction = function (done, session, util) {
 
                 session.doChangesAndSave(function (changesDone) {
                     newDepartment = util.newDepartment();
-                    newDepartment.name = '123456789012345678901234567890123456789012345678901234567890'; // > 50
+                    newDepartment.name = '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'; // > 50
                     session.registerNew(newDepartment);
                     changesDone();
                 }, function (err) {
