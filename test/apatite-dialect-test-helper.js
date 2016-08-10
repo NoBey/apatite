@@ -35,7 +35,6 @@ module.exports.testFunction = function (done, session, util) {
     var query = util.newQueryForDepartment(session);
     var sqlOptions = { isApatiteDirectSql: true, resultSet: true };
     session.execute(query, function (err, departments) {
-        console.log(err);
         expect(departments.length).to.equal(0);
 
         var newDepartment = util.newDepartment();
@@ -50,7 +49,7 @@ module.exports.testFunction = function (done, session, util) {
 
         var onEmpRemovalSaved = function (saveErr) {
             expect(saveErr).to.not.exist;
-            session.connection.executeSQLString('select oid as "oid", name as "name" from emp', [], function (sqlErr, result) {
+            session.connection.executeSQLString('select oid as "oid", name as "name" from EMP', [], function (sqlErr, result) {
                 expect(sqlErr).to.not.exist;
                 expect(result.rows.length).to.equal(0);
                 done();
@@ -74,7 +73,7 @@ module.exports.testFunction = function (done, session, util) {
             expect(deptResult.rows.length).to.equal(1);
             expect(deptResult.rows[0].name).to.equal('XDept');
 
-            session.connection.executeSQLString('select oid as "oid", name as "name" from emp', [], onEmpSelectFetched, sqlOptions);
+            session.connection.executeSQLString('select oid as "oid", name as "name" from EMP', [], onEmpSelectFetched, sqlOptions);
         }
 
         var onFirstDeptSelectFetched = function (err, result) {
@@ -87,7 +86,7 @@ module.exports.testFunction = function (done, session, util) {
                 changesDone();
             }, function (saveErr) {
                 expect(saveErr).to.not.exist;
-                session.connection.executeSQLString('select oid as "oid", name as "name" from dept', [], onDeptSelectFetched, sqlOptions);
+                session.connection.executeSQLString('select oid as "oid", name as "name" from DEPT', [], onDeptSelectFetched, sqlOptions);
             });
         }
 
@@ -99,7 +98,7 @@ module.exports.testFunction = function (done, session, util) {
             expect(saveErr).to.not.exist;
             expect(newDepartment.oid).to.equal(1);
             expect(newEmployee.oid).to.equal(1);
-            session.connection.executeSQLString('select oid as "oid", name as "name" from dept', [], onFirstDeptSelectFetched, sqlOptions);
+            session.connection.executeSQLString('select oid as "oid", name as "name" from DEPT', [], onFirstDeptSelectFetched, sqlOptions);
         });
 
     });
