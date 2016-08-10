@@ -45,14 +45,24 @@ module.exports.testFunction = function (done, session, util) {
         newEmployee.department = newDepartment;
 
 
-        //util.apatite.enableLogging();
+        util.apatite.enableLogging();
+        util.apatite.disableLogging();
 
         var onEmpRemovalSaved = function (saveErr) {
             expect(saveErr).to.not.exist;
             session.connection.executeSQLString('select oid as "oid", name as "name" from EMP', [], function (sqlErr, result) {
                 expect(sqlErr).to.not.exist;
                 expect(result.rows.length).to.equal(0);
-                done();
+
+                session.doChangesAndSave(function (changesDone) {
+                    newDepartment = util.newDepartment();
+                    newDepartment.name = '123456789012345678901234567890123456789012345678901234567890'; // > 50
+                    session.registerNew(newDepartment);
+                    changesDone();
+                }, function (err) {
+                    expect(err).to.exist;
+                    done();    
+                });
             }, sqlOptions);
         }
 
