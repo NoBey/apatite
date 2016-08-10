@@ -46,7 +46,11 @@ class ApatitePostgresTestUtil extends ApatiteTestUtil {
     }
 
     newApatite() {
-        return Apatite.forPostgres({ userName: 'postgres', password: '', connectionInfo: 'localhost/apatite' });
+        try {
+            return Apatite.forPostgres({ userName: 'postgres', password: '', connectionInfo: 'localhost/apatite' });
+        } catch (err) { //err when module is not installed
+            return new Apatite(new ApatitePostgresDialect({ userName: 'postgres', password: '', connectionInfo: 'localhost/apatite' }));
+        }
     }
 
     existsModule() {
