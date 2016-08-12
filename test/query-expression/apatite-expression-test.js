@@ -78,6 +78,12 @@ describe('ApatiteExpressionTest', function () {
                 expect(query.matchesObject(books[1])).to.equal(false);
                 expect(query.matchesObject(books[2])).to.equal(true);
 
+                (function () {
+                    query = util.newQueryForBook(session);
+                    query.attr('numberOfPages').in(120);
+                    query.matchesObject(books[0]);
+                }).should.Throw('Instance of Array is expected for "in" operation.');
+
                 query = util.newQueryForBook(session); //
                 query.attr('numberOfPages').newComparision('', 'SOME_INVALID_OPERATOR_');
 

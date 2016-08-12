@@ -44,10 +44,6 @@ module.exports.testFunction = function (done, session, util) {
         newEmployee.name = 'SomeEmp';
         newEmployee.department = newDepartment;
 
-
-        util.apatite.enableLogging();
-        util.apatite.disableLogging();
-
         var onEmpRemovalSaved = function (saveErr) {
             expect(saveErr).to.not.exist;
             session.connection.executeSQLString('select oid as "oid", name as "name" from EMP', [], function (sqlErr, result) {

@@ -7,6 +7,9 @@ class ApatiteTestConnection extends ApatiteConnection {
     constructor(dialect) {
         super(dialect);
         this.sqlCount = 0;
+        this.failBeginTrans = false;
+        this.failCommitTrans = false;
+        this.failRollbackTrans = false;
         this.productRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Shampoo', 'T1.QUANTITY': 100 }];
         this.petRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Dog' }, { 'T1.OID': 2, 'T1.NAME': 'Cat' }, { 'T1.OID': 3, 'T1.NAME': 'Mouse' }, { 'T1.OID': 4, 'T1.NAME': 'Donkey' }];
         this.petRecords2 = [{ 'T1.OID': 1, 'T1.NAME': 'Dog', 'T1.AGE': 11 }, { 'T1.OID': 2, 'T1.NAME': 'Cat', 'T1.AGE': 5 }, { 'T1.OID': 3, 'T1.NAME': 'Mouse', 'T1.AGE': 3 }, { 'T1.OID': 4, 'T1.NAME': 'Donkey', 'T1.AGE': 7 }];
@@ -107,16 +110,25 @@ class ApatiteTestConnection extends ApatiteConnection {
         };
     }
 
-    beginTransaction(onTransactionBegan) {
-        onTransactionBegan(null);
+    basicBeginTransaction(onTransactionBegan) {
+        if (this.failBeginTrans)
+            onTransactionBegan(new Error('Could not begin transaction.'));
+        else
+            onTransactionBegan(null);
     }
 
-    commitTransaction(onTransactionCommitted) {
-        onTransactionCommitted(null);
+    basicCommitTransaction(onTransactionCommitted) {
+        if (this.failCommitTrans)
+            onTransactionCommitted(new Error('Could not commit transaction.'));
+        else
+            onTransactionCommitted(null);
     }
 
-    rollbackTransaction(onTransactionRollbacked) {
-        onTransactionRollbacked(null);
+    basicRollbackTransaction(onTransactionRollbacked) {
+        if (this.failRollbackTrans)
+            onTransactionRollbacked(new Error('Could not rollback transaction.'));
+        else
+            onTransactionRollbacked(null);
     }
 
     basicConnect(onConnected) {

@@ -57,7 +57,9 @@ describe('ApatiteQueryResultTest', function () {
         util.newSession(function (err, session) {
             var query = util.newQueryForPet(session);
             query.fetchAttr('name');
+            util.apatite.enableLogging();
             session.execute(query, function (err, petNames) {
+                util.apatite.disableLogging();
                 expect(petNames.length).to.equal(4);
                 expect(petNames[0].name).to.equal('Dog');
                 expect(petNames[1].name).to.equal('Cat');
