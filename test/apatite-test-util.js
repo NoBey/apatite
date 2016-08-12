@@ -18,6 +18,8 @@ var Product = require('./test-models/product.js');
 
 var Book = require('./test-models/book.js');
 
+var Order = require('./test-models/order.js');
+
 class ApatiteTestUtil {
     constructor() {
         this.apatite = this.newApatite();
@@ -53,6 +55,7 @@ class ApatiteTestUtil {
         this.apatite.registerModel(Product);
 
         this.apatite.registerModel(Book);
+        this.apatite.registerModel(Order);
         this.modelsRegistered = true;
     }
 
