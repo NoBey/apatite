@@ -8,11 +8,10 @@ class Department {
     }
 
     static getModelDescriptor(apatite) {
-        var table = apatite.newTable('DEPT');
+        var table = apatite.getOrCreateTable('DEPT'); // table is created in Employee#getModelDescriptor
         var modelDescriptor = apatite.newModelDescriptor(Department, table);
 
-        var column = table.addNewColumn('OID', apatite.dialect.newSerialType());
-        column.bePrimaryKey();
+        var column = table.getColumn('OID'); // column OID is created in Employee#getModelDescriptor
         modelDescriptor.newSimpleMapping('oid', column);
 
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));

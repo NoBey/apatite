@@ -18,8 +18,9 @@ class Employee {
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(100));
         modelDescriptor.newSimpleMapping('name', column);
 
-        var deptTable = apatite.getOrCreateTable('DEPT');
-        var deptOIDColumn = deptTable.getColumn('OID');
+        var deptTable = apatite.newTable('DEPT');
+        var deptOIDColumn = deptTable.addNewColumn('OID', apatite.dialect.newSerialType());
+        deptOIDColumn.bePrimaryKey();
 
         column = table.addNewColumn('DEPTOID', apatite.dialect.newIntegerType(10));
         modelDescriptor.newOneToOneMapping('department', 'Department', [column], [deptOIDColumn]);

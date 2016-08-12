@@ -42,8 +42,8 @@ class ApatiteTestUtil {
         if (this.modelsRegistered)
             return;
 
-        this.apatite.registerModel(Department);
         this.apatite.registerModel(Employee);
+        this.apatite.registerModel(Department);
         this.apatite.registerModel(Pet);
         this.apatite.registerModel(Person);
 
