@@ -1,3 +1,5 @@
+'use strict';
+
 describe('ApatiteMysqlTest', function () {
     var ApatiteMysqlTestUtil = require('./apatite-mysql-test-util');
     var util = new ApatiteMysqlTestUtil();

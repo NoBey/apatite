@@ -72,11 +72,11 @@ describe('ApatiteExpressionTest', function () {
                 expect(query.matchesObject(books[1])).to.equal(true);
                 expect(query.matchesObject(books[2])).to.equal(true);
 
-                /*query = util.newQueryForBook(session);
-                query.attr('numberOfPages').in(120, 150);
+                query = util.newQueryForBook(session);
+                query.attr('numberOfPages').in([120, 150]);
                 expect(query.matchesObject(books[0])).to.equal(true);
                 expect(query.matchesObject(books[1])).to.equal(false);
-                expect(query.matchesObject(books[2])).to.equal(true);*/
+                expect(query.matchesObject(books[2])).to.equal(true);
 
                 query = util.newQueryForBook(session); //
                 query.attr('numberOfPages').newComparision('', 'SOME_INVALID_OPERATOR_');

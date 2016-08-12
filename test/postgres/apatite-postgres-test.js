@@ -1,4 +1,6 @@
-﻿describe('ApatitePostgresTest', function () {
+﻿'use strict';
+
+describe('ApatitePostgresTest', function () {
     var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
     var util = new ApatitePostgresTestUtil();
     if (util.existsModule()) {

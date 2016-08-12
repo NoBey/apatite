@@ -152,6 +152,18 @@ describe('ApatiteSimpleQueryTest', function () {
             expect(sqlStatement.bindings[0]).to.equal('test');
             expect(sqlStatement.bindings[1]).to.equal(1);
 
+            query = apatite.newQuery(User);
+            query.setSession(session);
+            query.attr('name').eq('test').and.attr('oid').in([25, 102]);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            query.fetchAttr('name');
+
+            sqlStatement = sqlBuilder.buildSQLStatement();
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? AND T1.OID IN (?,?)');
+            expect(sqlStatement.bindings[0]).to.equal('test');
+            expect(sqlStatement.bindings[1]).to.equal(25);
+            expect(sqlStatement.bindings[2]).to.equal(102);
+
         });
     });
     it('Function Query Validity', function () {
