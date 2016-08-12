@@ -66,6 +66,11 @@ describe('ApatiteQueryResultTest', function () {
                 expect(petNames[2].name).to.equal('Mouse');
             });
 
+            query = util.newQueryForPet(session);
+            query.fetchAttr('nameXEE');
+            session.execute(query, function (err, petNames) {
+                expect(err.message).to.equal('Mapping for attribute: nameXEE not found in model: Pet.');
+            });
         });
     })
     it('Column Converter Validity', function () {

@@ -183,6 +183,30 @@ describe('ApatiteChangeSetTest', function () {
             });
         });
 
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPet(session);
+            session.connection.failRollbackTrans = true;
+            session.connection.failCommitTrans = true;
+            session.execute(query, function (err, pets) {
+                var allPets = session.getAllObjectsInCache('Pet');
+                var dog = allPets[0];
+                expect(dog.name).to.equal('Dog');
+
+                var changesToDo = function (changesDone) {
+                    dog.name = 'test';
+                    changesDone(null);
+                };
+
+                var onSaved = function (err) {
+                    session.connection.failRollbackTrans = false;
+                    session.connection.failCommitTrans = false;
+                    expect(err.message).to.equal('Could not rollback transaction.');
+                    expect(dog.name).to.equal('Dog'); // all changes must be rolled back
+                }
+
+                session.doChangesAndSave(changesToDo, onSaved);
+            });
+        });
 
         util.newSession(function (err, session) {
             var query = util.newQueryForDepartment(session);

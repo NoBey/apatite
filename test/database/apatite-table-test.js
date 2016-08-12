@@ -49,5 +49,13 @@ describe('ApatiteTableTest', function () {
         (function () {
             new Column('TESTCOLUMN2', testTable, null);
         }).should.Throw('Column: TESTCOLUMN2 data type invalid.');
+
+        var ApatiteTestUtil = require('../apatite-test-util.js');
+        var util = new ApatiteTestUtil();
+        var apatite = util.newApatite();
+        (function () {
+            apatite.getOrCreateTable('foo');
+            apatite.newTable('foo');
+        }).should.Throw('Table: foo already exists.');
     })
 })
