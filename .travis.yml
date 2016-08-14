@@ -1,34 +1,56 @@
 language: node_js
+
 node_js:
- - "6.1.0"
+- 6.1.0
 
 dist: trusty
+
 sudo: required
 
 services:
- - postgresql
+- postgresql
+
+before_install:
+- wget 'https://github.com/cbandy/travis-oracle/archive/v2.0.1.tar.gz'
+- mkdir -p .travis/oracle
+- tar x -C .travis/oracle --strip-components=1 -f v2.0.1.tar.gz
+- .travis/oracle/download.sh
+- .travis/oracle/install.sh
 
 before_script:
- - psql -c 'drop database if exists apatite;' -U postgres
- - psql -c 'create database apatite;' -U postgres
- - npm install pg@6.0.0
- - mysql -e "drop database if exists apatite;" -uroot
- - mysql -e "create database IF NOT EXISTS apatite;" -uroot
- - mysql -e "CREATE USER 'apatite'@'localhost' IDENTIFIED BY 'apatite';" -uroot
- - mysql -e "GRANT ALL PRIVILEGES ON apatite.* TO 'apatite'@'localhost' WITH GRANT OPTION;" -uroot
- - mysql -e "SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';" -uroot
- - npm install mysql@2.11.1
+- psql -c 'drop database if exists apatite;' -U postgres
+- psql -c 'create database apatite;' -U postgres
+- npm install pg@6.0.0
+- mysql -e "drop database if exists apatite;" -uroot
+- mysql -e "create database IF NOT EXISTS apatite;" -uroot
+- mysql -e "CREATE USER 'apatite'@'localhost' IDENTIFIED BY 'apatite';" -uroot
+- mysql -e "GRANT ALL PRIVILEGES ON apatite.* TO 'apatite'@'localhost' WITH GRANT
+  OPTION;" -uroot
+- mysql -e "SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';"
+  -uroot
+- npm install mysql@2.11.1
 
 addons:
- postgresql: "9.4"
- apt:
-  packages:
-   - mysql-server-5.6
-   - mysql-client-core-5.6
-   - mysql-client-5.6
+  postgresql: '9.4'
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
 
 after_success:
 - npm install istanbul@0.4.4
 - npm install coveralls@2.11.9
 - npm install mocha-lcov-reporter@1.2.0
-- ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -R spec --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+- ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly
+  -- -R spec --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  && rm -rf ./coverage
+
+env:
+  global:
+  - secure: lnjXekOJy/pOnPZTCBLbYkeJOOUcpoBAlWASGAp5r/cx21tDkPRAdO2A3q8ur6I3wP72/X86wRerg/nJAEsbicPWB3rElQ/Cus9x2qWc5L8a1vS2wAz0MDX7nO6BwMQpWsmirya9eRBL2XE2sT2plbDxVUGO1uh/62qkm6BOyiaECk/mvmRDQNLN7NiXyAI1CDIhE+ScWEh++ScHCkWZmf6wUhWtr393DCdyJEotYvvZ5bjX9zCQGBgT3+iyoi3x+zD/HijHd3AYqyNz8xA/pjFBjquOHcXytOaxsVh+u6ESRpCA7SINDALtFF2XogWy/863OZz6x9lGzbrXMLVMiByq/1LbDD8zNzXWhyWTqZtGA9iQtWqzYiggm4WE3P0Sf/YjGbdxCFQ0PpFkXf25s4zNtGPgcjRNu1QSDJcl+WYBeJ3JkBbJ797RtO7sGlKjlMhdh0ZbjAl//s/pPxE19c43OlxkS5xatyMloVtIgMvM7coW3jt+1+mUtZSp7MnSQuS6HIuSoFceG9cWwgSkcsKZBXYd5Sr5+4SGIzF02XVXC7gQDtpfJIAOlH1sSGmNQTftn4Xfj8r3sAzYGbJBXCBragfBBfgj/9D/tdVD0m65g31ppx7lA/q4i/Or+7yaPSjgRfkZKNTVwpXGFcj9AeOsM5spO6AWyolqtMP1x+g=
+  - secure: jdAlit+4055YJn5DIWdcfVlt4U9EUZStHm96/ZXdKIkH9vdcmE7Y5Y0sUELrz9ufiVMB+FhNjb/GOnhGAv4eJ/qpXBVu3ECZ4/yfFY1O95cSNjdP7woqqTE2I9b7GGOXTwu/tMATY0mhzgyTL8KkO4K+JzRme+1GhLfORxLC/o1cxaGSZFAPkBqgmvcPrrbyf5kfd9zlAPEx6YpAXp74gFiRQ1BQ+NmNTtuW+b3tvFie1s21nVqW9X6TNPJSZCZtRI+rTSZ0YDSVikg5YzXsI6znTsqs2Uxb0PkWlhyQg4+52Sqxmnou1gZyZTMimwKKiO/3VSlHV3qhkQtIf7pYYfI8dHzY+RI+i+2kjzBBF+2UtFOcD/OoETygFfI7HDWANjKJ6Piv2L4spUs5Rf48N2F8MQuVDOgvWPW1gCUEtrKe3Ha88/sH25vTli0ECXhpI4kzcmV0SuGWnAddBK05GYKU7C+8+DZFm074M6Sm9NPT067AaCvWLUsDNIhoxwnA5FySi7q7cEAmro9bFnSchhtJB5b0LDdyTt1Rq7Lwa75PWzuLc0FQ++m+wKR215HZqbkjPsxPCFhdaB56qt6RpTT3DOFSYCvTu9ELL3khxpF6z4tjzm3oC4gWQuJmjahOash0Vhj6wZvWu1DA18d2mbNoDEAdIlhY5DTMQa/U7Z0=
+  - ORACLE_COOKIE=sqldev
+  - ORACLE_FILE=oracle11g/xe/oracle-xe-11.2.0-1.0.x86_64.rpm.zip
+  - ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
+  - ORACLE_SID=XE
