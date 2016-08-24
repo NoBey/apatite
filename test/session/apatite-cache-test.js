@@ -10,6 +10,8 @@ describe('ApatiteCacheTest', function () {
     it('Cache Validity', function () {
         util.newSession(function (err, session) {
 
+            util.apatite.defaultCacheSize = 5;
+
             //ensure all objects loaded in cache
             var query = util.newQueryForPet(session);
             session.execute(query, function (err, allPets) {
@@ -166,6 +168,7 @@ describe('ApatiteCacheTest', function () {
             var allEmployees = session.getAllObjectsInCache('Employee');
             expect(allEmployees.length).to.equal(0);
 
+            util.apatite.defaultCacheSize = 50;
             var query = util.newQueryForDepartment(session);
             session.execute(query, function (err, departments) {
                 allDepartments = session.getAllObjectsInCache('Department');

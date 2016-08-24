@@ -9,6 +9,7 @@ var util = new ApatiteTestUtil();
 describe('ApatiteChangeSetTest', function () {
     it('Change Set Validity', function () {
         //util.apatite.enableLogging();
+        util.apatite.defaultCacheSize = 50;
         util.newSession(function (err, session) {
             var allPets = session.getAllObjectsInCache('Pet');
             expect(allPets.length).to.equal(0);
@@ -267,7 +268,7 @@ describe('ApatiteChangeSetTest', function () {
     });
 
     it('One To N Change Set Validity', function () {
-
+        util.apatite.defaultCacheSize = 50;
         util.newSession(function (err, session) {
             var query = util.newQueryForDepartment(session);
             session.execute(query, function (err, allDepartments) {
