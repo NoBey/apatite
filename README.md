@@ -206,6 +206,7 @@ $ npm install apatite
 ## Links
 
   - [Documentation](https://github.com/apatitejs/doc/blob/master/doc.md)
+  - [Public API](https://github.com/apatitejs/public-api/blob/master/public-api.md)
   - [Example App](https://github.com/apatitejs/apatite-example-app)
 
 ## Tests
