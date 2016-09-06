@@ -52,6 +52,21 @@ $ npm install apatite
 		}
 	}
 	```
+You could also create descriptor from a simple object:
+
+	```js
+		static getModelDescriptor(apatite) {
+			var object = {
+				table: 'DEPT',
+				model: Department,
+				mappings: [
+					{attr: 'oid', col: 'OID', pk: true, type: 'serial'},
+					{attr: 'name', col: 'NAME', type: 'varchar', length: 100}
+				]
+			}
+			return apatite.newDescriptorFromObject(object);
+		}
+	```
 
 3. Register your models.
 
