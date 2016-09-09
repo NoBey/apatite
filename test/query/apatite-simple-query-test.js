@@ -154,6 +154,26 @@ describe('ApatiteSimpleQueryTest', function () {
 
             query = apatite.newQuery(User);
             query.setSession(session);
+            query.attr('name').isNULL();
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            query.fetchAttr('name');
+
+            sqlStatement = sqlBuilder.buildSQLStatement();
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME IS NULL');
+            expect(sqlStatement.bindings.length).to.equal(0);
+
+            query = apatite.newQuery(User);
+            query.setSession(session);
+            query.attr('name').isNOTNULL();
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            query.fetchAttr('name');
+
+            sqlStatement = sqlBuilder.buildSQLStatement();
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME IS NOT NULL');
+            expect(sqlStatement.bindings.length).to.equal(0);
+
+            query = apatite.newQuery(User);
+            query.setSession(session);
             query.attr('name').eq('test').and.attr('oid').in([25, 102]);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
             query.fetchAttr('name');
