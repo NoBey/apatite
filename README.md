@@ -58,7 +58,7 @@ You could also create descriptor from a simple object:
 		static getModelDescriptor(apatite) {
 			var object = {
 				table: 'DEPT',
-				model: Department,
+				model: this,
 				mappings: [
 					{attr: 'oid', col: 'OID', pk: true, type: 'serial'},
 					{attr: 'name', col: 'NAME', type: 'varchar', length: 100}
