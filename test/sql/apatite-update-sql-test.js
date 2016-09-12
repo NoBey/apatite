@@ -16,6 +16,7 @@ describe('ApatiteUpdateSQLTest', function () {
                 session.startTrackingChanges();
                 allPets[0].name = 'Dog'
                 var sqlStmt = session.changeSet.buildUpdateStatements()[0];
+                sqlStmt.buildSQLString()
                 expect(sqlStmt.sqlString).to.equal('UPDATE PET SET NAME = ? WHERE OID = ?');
                 var bindings = sqlStmt.bindings;
                 expect(bindings.length).to.equal(2);
@@ -33,6 +34,7 @@ describe('ApatiteUpdateSQLTest', function () {
                 session.startTrackingChanges();
                 allProducts[0].quantity = 20
                 var sqlStmt = session.changeSet.buildUpdateStatements()[0];
+                sqlStmt.buildSQLString()
                 expect(sqlStmt.sqlString).to.equal('UPDATE PRODUCT SET QUANTITY = QUANTITY + ? WHERE OID = ?');
                 var bindings = sqlStmt.bindings;
                 expect(bindings.length).to.equal(2);
