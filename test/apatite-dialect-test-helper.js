@@ -1,7 +1,6 @@
 ﻿var expect = require('chai').expect;
 
 module.exports.setUp = function (done, util, onSetupFinished) {
-    //this.timeout(5000);
     var connOptions = util.apatite.dialect.connectionOptions;
     var oriUserName = connOptions.userName;
     connOptions.userName = 'foo_and_bar';
@@ -21,7 +20,6 @@ module.exports.setUp = function (done, util, onSetupFinished) {
 }
 
 module.exports.tearDown = function (done, util, session) {
-    //this.timeout(5000);
     util.deleteTestTables(function (err) {
         expect(err).to.not.exist;
         session.end(function (endErr) {
