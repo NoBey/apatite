@@ -51,6 +51,7 @@ class ApatiteTestConnection extends ApatiteConnection {
         this.maxBookPagesResult = Math.max.apply(Math,this.bookRecords.map(function(row){return row['T1.NUMBEROFPAGES'];}));
         this.minBookPagesResult = Math.min.apply(Math,this.bookRecords.map(function(row){return row['T1.NUMBEROFPAGES'];}));
         this.sqlResults = {
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.OID IN (?,?)13': [this.bookRecords[0], this.bookRecords[2]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE T1.NAME = ? AND T1.NUMBEROFPAGES = ? AND T1.OID = ?Apatite602': [this.bookRecords[1]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE ( T1.NAME = ? AND T1.NUMBEROFPAGES = ? ) OR ( T1.NAME = ? AND T1.NUMBEROFPAGES = ? ) OR ( T1.NAME = ? AND T1.NUMBEROFPAGES = ? )Apatite X60Learning X Node.js120Learn Javascript in 30 Days150': [this.bookRecords[0]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME", T1.NUMBEROFPAGES AS "T1.NUMBEROFPAGES" FROM BOOK T1 WHERE ( T1.NAME = ? AND T1.NUMBEROFPAGES = ? ) OR ( T1.NAME = ? AND T1.NUMBEROFPAGES = ? ) OR ( T1.NAME = ? AND T1.NUMBEROFPAGES = ? )Apatite X60Learning Node.js120Learn Javascript X in 30 Days150': [this.bookRecords[2]],
