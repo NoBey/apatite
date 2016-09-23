@@ -26,11 +26,13 @@ describe('ApatiteChangeSetTest', function () {
                 session.registerNew(newPet);
                 allPets = session.getAllObjectsInCache('Pet');
                 expect(allPets.length).to.equal(0);
+                expect(newPet.postSaveCalled).to.equal(false);
                 changesDone();
             }
             var onSaved = function (err) {
                 allPets = session.getAllObjectsInCache('Pet');
                 expect(allPets.length).to.equal(1);
+                expect(newPet.postSaveCalled).to.equal(true);
             }
 
             session.doChangesAndSave(changesToDo, onSaved);
@@ -72,14 +74,17 @@ describe('ApatiteChangeSetTest', function () {
             session.execute(query, function (err, pets) {
                 var allPets = session.getAllObjectsInCache('Pet');
                 expect(allPets.length).to.equal(4);
+                var petToDelete = allPets[0];
+                expect(petToDelete.postLoadCalled).to.equal(true);
 
                 session.doChangesAndSave(function (changesDone) {
-                    session.registerDelete(allPets[0]);
+                    session.registerDelete(petToDelete);
+                    expect(petToDelete.postDeleteCalled).to.equal(false);
                     changesDone();
                 }, function (err) {
                     allPets = session.getAllObjectsInCache('Pet');
                     expect(allPets.length).to.equal(3);
-
+                    expect(petToDelete.postDeleteCalled).to.equal(true);
                     session.doChangesAndSave(function (changesDone) {
                         var pet = util.newPet();
                         pet.name = 'Dog';
@@ -101,12 +106,27 @@ describe('ApatiteChangeSetTest', function () {
                 var dog = allPets[0];
                 expect(dog.name).to.equal('Dog');
 
+                var cat = allPets[1];
+                expect(cat.name).to.equal('Cat');
+
+                var newPet = util.newPet();
+                newPet.oid = 7;
+                newPet.name = 'Parrot';
+
                 var changesToDo = function (changesDone) {
                     dog.name = 'DogXXXXXXXXXXXXXXX';
+                    session.registerNew(newPet);
+                    session.registerDelete(cat);
+                    expect(newPet.postRollbackCalled).to.equal(false);
+                    expect(cat.postRollbackCalled).to.equal(false);
+                    expect(dog.postRollbackCalled).to.equal(false);
                     changesDone(null);
                 };
 
                 var onSaved = function (err) {
+                    expect(dog.postRollbackCalled).to.equal(true);
+                    expect(newPet.postRollbackCalled).to.equal(true);
+                    expect(cat.postRollbackCalled).to.equal(true);
                     expect(err.message).to.equal('Update statement failed.');
                     expect(dog.name).to.equal('Dog'); // all changes must be rolled back
                 }

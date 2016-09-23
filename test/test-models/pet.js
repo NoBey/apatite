@@ -4,6 +4,26 @@ class Pet {
     constructor() {
         this.oid = 0;
         this.name = '';
+        this.postLoadCalled = false;
+        this.postSaveCalled = false;
+        this.postDeleteCalled = false;
+        this.postRollbackCalled = false;
+    }
+
+    apatitePostLoad() {
+        this.postLoadCalled = true;
+    }
+
+    apatitePostSave() {
+        this.postSaveCalled = true;
+    }
+
+    apatitePostDelete() {
+        this.postDeleteCalled = true;
+    }
+
+    apatitePostRollback() {
+        this.postRollbackCalled = true;
     }
 
     static getModelDescriptor(apatite) {
