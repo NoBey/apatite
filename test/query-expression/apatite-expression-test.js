@@ -7,6 +7,58 @@ var ApatiteTestUtil = require('../apatite-test-util.js');
 var util = new ApatiteTestUtil();
 
 describe('ApatiteExpressionTest', function () {
+    it('Exists Validity', function () {
+        util.newSession(function (err, session) {
+            util.apatite.defaultCacheSize = 50;
+            var query = util.newQueryForDepartment(session);
+            var subQuery = util.newQueryForEmployee(session);
+            subQuery.attr('department.oid').eq(query.attrJoin('oid'));
+            query.exists(subQuery);
+            //load all departments in the cache so that below all objects are returned from cache
+            query.execute(function (err, departments) {
+                expect(departments.length).to.equal(3)
+            });
+
+            query = util.newQueryForDepartment(session);
+            subQuery = util.newQueryForEmployee(session);
+            subQuery.attr('department.oid').eq(query.attrJoin('oid'));
+            query.exists(subQuery);
+            query.execute(function (err, departments) {// all objects from cache
+                expect(departments.length).to.equal(3)
+            });
+
+            util.apatite.defaultCacheSize = 0;
+            session.clearCache()
+
+            query = util.newQueryForDepartment(session);
+            subQuery = util.newQueryForEmployee(session);
+            subQuery.attr('department.oid').eq(query.attrJoin('oid')).and;
+            subQuery.attr('name').eq('Madhu');
+            query.exists(subQuery);
+            query.execute(function (err, departments) {
+                expect(departments.length).to.equal(1)
+                expect(departments[0].name).to.equal('Development')
+            });
+
+            query = util.newQueryForPet(session);
+            subQuery = util.newQueryForPerson(session);
+            subQuery.attr('pet.oid').eq(query.attrJoin('oid'));
+            query.exists(subQuery);
+            query.execute(function (err, pets) {
+                expect(pets.length).to.equal(4)
+            });
+
+            query = util.newQueryForPet(session);
+            subQuery = util.newQueryForPerson(session);
+            subQuery.attr('pet.oid').eq(query.attrJoin('oid'));
+            query.notExists(subQuery);
+            query.execute(function (err, pets) {
+                expect(pets.length).to.equal(2)
+            });
+
+        });
+    });
+
     it('Comparision Validity', function () {
         util.newSession(function (err, session) {
             var query = util.newQueryForBook(session);
