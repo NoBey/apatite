@@ -39,9 +39,9 @@ class ApatiteMysqlTestUtil extends ApatiteTestUtil {
 
     newApatite() {
         try {
-            return Apatite.forMysql({ userName: 'apatite', password: 'apatite', connectionInfo: 'localhost/apatite' });
+            return Apatite.forMysql({ userName: 'apatite', password: 'Apatite2016!', connectionInfo: 'localhost/apatite' });
         } catch (err) { //err when module is not installed
-            return new Apatite(new ApatiteMysqlDialect({ userName: 'apatite', password: 'apatite', connectionInfo: 'localhost/apatite' }));
+            return new Apatite(new ApatiteMysqlDialect({ userName: 'apatite', password: 'Apatite2016!', connectionInfo: 'localhost/apatite' }));
         }
     }
 
