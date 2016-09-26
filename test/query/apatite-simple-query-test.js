@@ -184,6 +184,16 @@ describe('ApatiteSimpleQueryTest', function () {
             expect(sqlStatement.bindings[1]).to.equal(25);
             expect(sqlStatement.bindings[2]).to.equal(102);
 
+            query = apatite.newQuery(User);
+            query.setSession(session);
+            query.attr('oid').eq(25).or.attr('oid').eq(102);
+            sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
+            query.fetchAttr('oid');
+
+            sqlStatement = sqlBuilder.buildSQLStatement();
+            expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID" FROM USERS T1 WHERE T1.OID = ? OR T1.OID = ?');
+            expect(sqlStatement.bindings[0]).to.equal(25);
+            expect(sqlStatement.bindings[1]).to.equal(102);
         });
     });
     it('Function Query Validity', function () {

@@ -5,6 +5,11 @@ class Department {
         this.oid = 0;
         this.name = '';
         this.employees = [];
+        this.postSaveCalled = false;
+    }
+
+    apatitePostSave() {
+        this.postSaveCalled = true;
     }
 
     static getModelDescriptor(apatite) {

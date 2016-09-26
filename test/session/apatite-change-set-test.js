@@ -374,18 +374,21 @@ describe('ApatiteChangeSetTest', function () {
         util.newSession(function (err, session) {
             var query = util.newQueryForDepartment(session);
             session.execute(query, function (err, allDepartments) {
+                var dept = allDepartments[0];
                 var changesToDo = function (changesDone) {
-                    allDepartments[0].name = '';
-                    delete allDepartments[0].name;
+                    dept.name = '';
+                    delete dept.name;
                     var statements = session.changeSet.buildUpdateStatements();
                     expect(statements.length).to.equal(1);
                     statements[0].buildSQLString()
                     expect(statements[0].sqlString).to.equal('UPDATE DEPT SET NAME = ? WHERE OID = ?');
                     expect(statements[0].bindings[0]).to.equal(null);
                     expect(statements[0].bindings[1]).to.equal(1);
+                    expect(dept.postSaveCalled).to.equal(false);
                     changesDone();
                 }
                 var onSaved = function (err) {
+                    expect(dept.postSaveCalled).to.equal(true);
                 }
 
                 session.doChangesAndSave(changesToDo, onSaved);
