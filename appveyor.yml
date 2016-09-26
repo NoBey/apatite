@@ -5,7 +5,7 @@ environment:
     - nodejs_version: "6.6.0"
 
 services:
-  #- mssql2016
+  - mssql2016
   - postgresql94
   - mysql
 
@@ -17,9 +17,9 @@ install:
   - npm install
 
 before_test:
-  #- sqlcmd -S localhost -U sa -P Password12! -Q "CREATE DATABASE apatite" -d "master"
-  #- sqlcmd -S localhost -U sa -P Password12! -Q "CREATE LOGIN apatite WITH PASSWORD = 'Nodejs20090527!'" -d "apatite"
-  #- sqlcmd -S localhost -U sa -P Password12! -Q "EXEC apatite..sp_addsrvrolemember @loginame = 'apatite', @rolename = 'sysadmin'" -d "apatite"
+  - sqlcmd -S localhost -U sa -P Password12! -Q "CREATE DATABASE apatite" -d "master"
+  - sqlcmd -S localhost -U sa -P Password12! -Q "CREATE LOGIN apatite WITH PASSWORD = 'Nodejs20090527!'" -d "apatite"
+  - sqlcmd -S localhost -U sa -P Password12! -Q "EXEC apatite..sp_addsrvrolemember @loginame = 'apatite', @rolename = 'sysadmin'" -d "apatite"
   - SET PGUSER=postgres
   - SET PGPASSWORD=Password12!
   - PATH=C:\Program Files\PostgreSQL\9.4\bin\;%PATH%
@@ -44,5 +44,12 @@ test_script:
   # run tests
   - npm test
 
-# Don't actually build.
+after_test:
+  - npm install istanbul@0.4.4
+  - npm install coveralls@2.11.9
+  - npm install mocha-lcov-reporter@1.2.0
+  - node_modules\.bin\istanbul cover node_modules\mocha\bin\_mocha --report lcovonly -- -R spec --recursive
+  - ps: get-content .\coverage\lcov.info | node .\node_modules\coveralls\bin\coveralls.js
+
+# Don't actually do MSBuild.
 build: off
