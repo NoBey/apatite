@@ -20,8 +20,8 @@ describe('ApatiteUpdateSQLTest', function () {
                 expect(sqlStmt.sqlString).to.equal('UPDATE PET SET NAME = ? WHERE OID = ?');
                 var bindings = sqlStmt.bindings;
                 expect(bindings.length).to.equal(2);
-                expect(bindings[0]).to.equal('Dog');
-                expect(bindings[1]).to.equal(1);
+                expect(bindings[0].variableValue).to.equal('Dog');
+                expect(bindings[1].variableValue).to.equal(1);
             });
         });
     });
@@ -38,8 +38,8 @@ describe('ApatiteUpdateSQLTest', function () {
                 expect(sqlStmt.sqlString).to.equal('UPDATE PRODUCT SET QUANTITY = QUANTITY + ? WHERE OID = ?');
                 var bindings = sqlStmt.bindings;
                 expect(bindings.length).to.equal(2);
-                expect(bindings[0]).to.equal(-80);
-                expect(bindings[1]).to.equal(1);
+                expect(bindings[0].variableValue).to.equal(-80);
+                expect(bindings[1].variableValue).to.equal(1);
             });
         });
     });

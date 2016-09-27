@@ -149,7 +149,8 @@ class ApatiteTestConnection extends ApatiteConnection {
             onConnected(null);
     }
 
-    basicExecuteSQLString(sqlStr, bindings, onExecuted) {
+    basicExecuteSQLString(sqlStr, bindVariables, onExecuted) {
+        var bindings = this.buildBindVariableValues(bindVariables);
         this.sqlCount++;
         var key = sqlStr + bindings.join('');
         var result = this.sqlResults[key];

@@ -277,10 +277,10 @@ describe('ApatiteChangeSetTest', function () {
                     expect(statements.length).to.equal(2);
                     statements[0].buildSQLString()
                     expect(statements[0].sqlString).to.equal('UPDATE PET SET NAME = ? WHERE OID = ?'); // even though the attribute of person has been first set, the update is issued for pet first becuase of the table sort order
-                    expect(statements[0].bindings[0]).to.equal('PetX');
+                    expect(statements[0].bindings[0].variableValue).to.equal('PetX');
                     statements[1].buildSQLString()
                     expect(statements[1].sqlString).to.equal('UPDATE PERSON SET NAME = ? WHERE OID = ?');
-                    expect(statements[1].bindings[0]).to.equal('Owner2');
+                    expect(statements[1].bindings[0].variableValue).to.equal('Owner2');
                     
                 }
                 session.doChangesAndSave(changesToDo, onSaved);
@@ -382,8 +382,8 @@ describe('ApatiteChangeSetTest', function () {
                     expect(statements.length).to.equal(1);
                     statements[0].buildSQLString()
                     expect(statements[0].sqlString).to.equal('UPDATE DEPT SET NAME = ? WHERE OID = ?');
-                    expect(statements[0].bindings[0]).to.equal(null);
-                    expect(statements[0].bindings[1]).to.equal(1);
+                    expect(statements[0].bindings[0].variableValue).to.equal(null);
+                    expect(statements[0].bindings[1].variableValue).to.equal(1);
                     expect(dept.postSaveCalled).to.equal(false);
                     changesDone();
                 }

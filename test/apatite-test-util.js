@@ -142,10 +142,14 @@ class ApatiteTestUtil {
     }
 
     basicCreateTestTables(onTablesCreated, statements) {
-        this.newSession(function (err, session) {
-            session.connection.executeStatements(statements, function (err, result) {
-                if (err) {
-                    onTablesCreated(err);
+        this.newSession(function (sessionErr, session) {
+            if (sessionErr) {
+                onTablesCreated(sessionErr);
+                return;
+            }
+            session.connection.executeStatements(statements, function (connErr, result) {
+                if (connErr) {
+                    onTablesCreated(connErr);
                     return;
                 }
                 session.end(function (endErr) {

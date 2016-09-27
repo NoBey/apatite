@@ -1,8 +1,8 @@
-﻿'use strict';
+'use strict';
 
-describe('ApatitePostgresTest', function () {
-    var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
-    var util = new ApatitePostgresTestUtil();
+describe('ApatiteMssqlTest', function () {
+    var ApatiteMssqlTestUtil = require('./apatite-mssql-test-util');
+    var util = new ApatiteMssqlTestUtil();
     if (util.existsModule()) {
         var helper = require('../apatite-dialect-test-helper.js');
         var session = null;
@@ -15,16 +15,16 @@ describe('ApatitePostgresTest', function () {
             doPoolTest();
         });
 
-        it('Postgres Validity', function (done) {
+        it('Mssql Validity', function (done) {
             helper.testFunction(done, session, util);
         });
     }
 })
 
 function doPoolTest() {
-    describe('ApatitePostgresPoolTest', function () {
-        var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
-        var util = new ApatitePostgresTestUtil();
+    describe('ApatiteMssqlPoolTest', function () {
+        var ApatiteMssqlTestUtil = require('./apatite-mssql-test-util');
+        var util = new ApatiteMssqlTestUtil();
         if (util.existsModule()) {
             var helper = require('../apatite-dialect-pool-test-helper.js');
             var session = null;
@@ -34,20 +34,21 @@ function doPoolTest() {
 
             after(function (done) {
                 helper.tearDown(done, util, session);
-                doPoolErrorTest(); //It seems promise rejection has not been handled properly in pg module
+                doPoolErrorTest();
             });
 
-            it('Postgres Connection Pool Validity', function (done) {
+            it('Mssql Connection Pool Validity', function (done) {
                 helper.testFunction(done, session, util);
             });
         }
-    })
+    })    
 }
 
+
 function doPoolErrorTest() {
-    describe('ApatitePostgresPoolErrorTest', function () {
-        var ApatitePostgresTestUtil = require('./apatite-postgres-test-util');
-        var util = new ApatitePostgresTestUtil();
+    describe('ApatiteMssqlPoolErrorTest', function () {
+        var ApatiteMssqlTestUtil = require('./apatite-mssql-test-util');
+        var util = new ApatiteMssqlTestUtil();
         if (util.existsModule()) {
             var helper = require('../apatite-dialect-pool-error-test-helper.js');
             var session = null;
@@ -59,7 +60,7 @@ function doPoolErrorTest() {
                 helper.tearDown(done, util, session);
             });
 
-            it('Postgres Connection Pool Error Validity', function (done) {
+            it('Mssql Connection Pool Error Validity', function (done) {
                 helper.testFunction(done, session, util);
             });
         }

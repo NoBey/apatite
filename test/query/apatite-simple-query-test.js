@@ -80,7 +80,7 @@ describe('ApatiteSimpleQueryTest', function () {
 
             var sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ?');
-            expect(sqlStatement.bindings[0]).to.equal('test');
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
 
 
             query = apatite.newQuery(User);
@@ -90,8 +90,8 @@ describe('ApatiteSimpleQueryTest', function () {
 
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? AND T1.ID = ?');
-            expect(sqlStatement.bindings[0]).to.equal('test');
-            expect(sqlStatement.bindings[1]).to.equal('tom');
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
+            expect(sqlStatement.bindings[1].variableValue).to.equal('tom');
 
 
             query = apatite.newQuery(User);
@@ -101,8 +101,8 @@ describe('ApatiteSimpleQueryTest', function () {
 
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? OR T1.ID = ?');
-            expect(sqlStatement.bindings[0]).to.equal('test');
-            expect(sqlStatement.bindings[1]).to.equal('tom');
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
+            expect(sqlStatement.bindings[1].variableValue).to.equal('tom');
 
             query = apatite.newQuery(User);
             query.enclose.attr('name').eq('tom').or.attr('name').eq('jerry');
@@ -112,10 +112,10 @@ describe('ApatiteSimpleQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME" FROM USERS T1 WHERE ( T1.NAME = ? OR T1.NAME = ? ) AND ( T1.ID = ? OR T1.ID = ? )');
-            expect(sqlStatement.bindings[0]).to.equal('tom');
-            expect(sqlStatement.bindings[1]).to.equal('jerry');
-            expect(sqlStatement.bindings[2]).to.equal('x');
-            expect(sqlStatement.bindings[3]).to.equal('y');
+            expect(sqlStatement.bindings[0].variableValue).to.equal('tom');
+            expect(sqlStatement.bindings[1].variableValue).to.equal('jerry');
+            expect(sqlStatement.bindings[2].variableValue).to.equal('x');
+            expect(sqlStatement.bindings[3].variableValue).to.equal('y');
 
             query = apatite.newQuery(User);
             query.setSession(session);
@@ -149,8 +149,8 @@ describe('ApatiteSimpleQueryTest', function () {
 
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? AND T1.OID = ?');
-            expect(sqlStatement.bindings[0]).to.equal('test');
-            expect(sqlStatement.bindings[1]).to.equal(1);
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
+            expect(sqlStatement.bindings[1].variableValue).to.equal(1);
 
             query = apatite.newQuery(User);
             query.setSession(session);
@@ -180,9 +180,9 @@ describe('ApatiteSimpleQueryTest', function () {
 
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? AND T1.OID IN (?,?)');
-            expect(sqlStatement.bindings[0]).to.equal('test');
-            expect(sqlStatement.bindings[1]).to.equal(25);
-            expect(sqlStatement.bindings[2]).to.equal(102);
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
+            expect(sqlStatement.bindings[1].variableValue).to.equal(25);
+            expect(sqlStatement.bindings[2].variableValue).to.equal(102);
 
             query = apatite.newQuery(User);
             query.setSession(session);
@@ -192,8 +192,8 @@ describe('ApatiteSimpleQueryTest', function () {
 
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.OID AS "T1.OID" FROM USERS T1 WHERE T1.OID = ? OR T1.OID = ?');
-            expect(sqlStatement.bindings[0]).to.equal(25);
-            expect(sqlStatement.bindings[1]).to.equal(102);
+            expect(sqlStatement.bindings[0].variableValue).to.equal(25);
+            expect(sqlStatement.bindings[1].variableValue).to.equal(102);
         });
     });
     it('Function Query Validity', function () {

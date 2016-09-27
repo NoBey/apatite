@@ -26,9 +26,9 @@ describe('ApatiteInsertSQLTest', function () {
                 expect(sqlStmt.sqlString).to.equal('INSERT INTO PERSON (OID, NAME, PETOID) VALUES (?, ?, ?)');
                 var bindings = sqlStmt.bindings;
                 expect(bindings.length).to.equal(3);
-                expect(bindings[0]).to.equal(10);
-                expect(bindings[1]).to.equal('Sudan');
-                expect(bindings[2]).to.equal(null);
+                expect(bindings[0].variableValue).to.equal(10);
+                expect(bindings[1].variableValue).to.equal('Sudan');
+                expect(bindings[2].variableValue).to.equal(null);
 
                 newPerson.pet = allPets[0];
                 sqlBuilder = util.apatite.dialect.getInsertSQLBuilder(session, newPerson);
@@ -36,9 +36,9 @@ describe('ApatiteInsertSQLTest', function () {
                 expect(sqlStmt.sqlString).to.equal('INSERT INTO PERSON (OID, NAME, PETOID) VALUES (?, ?, ?)');
                 var bindings = sqlStmt.bindings;
                 expect(bindings.length).to.equal(3);
-                expect(bindings[0]).to.equal(10);
-                expect(bindings[1]).to.equal('Sudan');
-                expect(bindings[2]).to.equal(1);
+                expect(bindings[0].variableValue).to.equal(10);
+                expect(bindings[1].variableValue).to.equal('Sudan');
+                expect(bindings[2].variableValue).to.equal(1);
             });
         });
     });

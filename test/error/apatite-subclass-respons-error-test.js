@@ -68,7 +68,6 @@ describe('ApatiteSubClassResponsibilityTest', function() {
         (function () {
             expr.getAttrNamesWithValues();
         }).should.Throw(errMsg);
-        expect(expr.getBindings().length).to.equal(0);
         expect(expr.isAttributeExpression()).to.equal(false);
 
     })

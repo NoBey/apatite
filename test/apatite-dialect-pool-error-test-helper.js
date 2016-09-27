@@ -8,6 +8,7 @@ module.exports.setUp = function (done, util, onSetupFinished) {
     var oriUserName = connOptions.userName;
     connOptions.userName = 'foo_and_bar';
     util.createTestTablesForPool(function (err) {
+        connOptions.userName = oriUserName;
         expect(err).to.exist;
         onSetupFinished(null);
         done();

@@ -171,7 +171,7 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID", T1.LOCATIONOID AS "T1.LOCATIONOID", T1.SECLOCATIONOID AS "T1.SECLOCATIONOID" FROM EMP T1, DEPT T2 WHERE T1.DEPTOID = T2.OID AND T2.NAME = ?');
-            expect(query.getBindings()[0]).to.equal('test');
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal('test');
 
             query = apatite.newQuery(Employee).fetchAttrs(['name', 'department.name', 'location.name', 'department.location.name']);
             query.setSession(session);
@@ -198,7 +198,7 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM EMP T1 WHERE T1.DEPTOID = ?');
-            expect(query.getBindings()[0]).to.equal(0);
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal(0);
 
             query = apatite.newQuery(Employee).attr('department.location.oid').eq(0);
             query.setSession(session);
@@ -206,7 +206,7 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM EMP T1, DEPT T2 WHERE T1.DEPTOID = T2.OID AND T2.LOCATIONOID = ?');
-            expect(query.getBindings()[0]).to.equal(0);
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal(0);
 
             query = apatite.newQuery(Employee).attr('department.location.oid').eq(0);
             query.setSession(session);
@@ -214,7 +214,7 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T2.NAME AS "T2.NAME" FROM EMP T1, DEPT T3, LOCATION T2 WHERE T1.DEPTOID = T3.OID AND T3.LOCATIONOID = T2.OID AND T3.LOCATIONOID = ?');
-            expect(query.getBindings()[0]).to.equal(0);
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal(0);
 
             var newDepartment = new Department();
             newDepartment.name = 'Sales';
@@ -223,13 +223,13 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID", T1.LOCATIONOID AS "T1.LOCATIONOID", T1.SECLOCATIONOID AS "T1.SECLOCATIONOID" FROM EMP T1 WHERE ( T1.DEPTOID = ? )');
-            expect(query.getBindings()[0]).to.equal(20);
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal(20);
 
             query = session.newQuery(Employee).attr('department').eq(null);
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID", T1.LOCATIONOID AS "T1.LOCATIONOID", T1.SECLOCATIONOID AS "T1.SECLOCATIONOID" FROM EMP T1 WHERE ( T1.DEPTOID = ? )');
-            expect(query.getBindings()[0]).to.equal(null);
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal(null);
 
             var newLocation = new Location();
             newLocation.name = 'First Floor';
@@ -238,7 +238,7 @@ describe('ApatiteOneToOneQueryTest', function () {
             sqlBuilder = apatite.dialect.getSelectSQLBuilder(query);
 
             expect(sqlBuilder.buildSQLStatement().sqlString).to.equal('SELECT T1.OID AS "T1.OID", T1.ID AS "T1.ID", T1.NAME AS "T1.NAME", T1.DEPTOID AS "T1.DEPTOID", T1.LOCATIONOID AS "T1.LOCATIONOID", T1.SECLOCATIONOID AS "T1.SECLOCATIONOID" FROM EMP T1, DEPT T2 WHERE T1.DEPTOID = T2.OID AND ( T2.LOCATIONOID = ? )');
-            expect(query.getBindings()[0]).to.equal(30);
+            expect(sqlBuilder.bindVariables[0].variableValue).to.equal(30);
 
             empModelDescriptor.getMappingForAttribute('location').beLeftOuterJoin();
             query = apatite.newQuery(Employee).fetchAttrs(['name', 'location.name', 'secondaryLocation.name']);

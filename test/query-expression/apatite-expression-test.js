@@ -331,7 +331,7 @@ describe('ApatiteExpressionTest', function () {
 
             var sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? ORDER BY T1.NAME');
-            expect(sqlStatement.bindings[0]).to.equal('test');
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
 
             query = apatite.newQuery(User);
             query.setSession(session);
@@ -341,7 +341,7 @@ describe('ApatiteExpressionTest', function () {
 
             sqlStatement = sqlBuilder.buildSQLStatement();
             expect(sqlStatement.sqlString).to.equal('SELECT T1.NAME AS "T1.NAME" FROM USERS T1 WHERE T1.NAME = ? ORDER BY T1.NAME DESC');
-            expect(sqlStatement.bindings[0]).to.equal('test');
+            expect(sqlStatement.bindings[0].variableValue).to.equal('test');
         });
     });
 
