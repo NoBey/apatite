@@ -20,6 +20,8 @@ before_test:
   - sqlcmd -S localhost -U sa -P Password12! -Q "CREATE DATABASE apatite" -d "master"
   - sqlcmd -S localhost -U sa -P Password12! -Q "CREATE LOGIN apatite WITH PASSWORD = 'Nodejs20090527!'" -d "apatite"
   - sqlcmd -S localhost -U sa -P Password12! -Q "EXEC apatite..sp_addsrvrolemember @loginame = 'apatite', @rolename = 'sysadmin'" -d "apatite"
+  - npm install tedious@1.14.0
+  - npm install tedious-connection-pool@1.0.5
   - SET PGUSER=postgres
   - SET PGPASSWORD=Password12!
   - PATH=C:\Program Files\PostgreSQL\9.4\bin\;%PATH%
