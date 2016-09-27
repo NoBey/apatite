@@ -71,6 +71,14 @@ describe('ApatiteQueryResultTest', function () {
             session.execute(query, function (err, petNames) {
                 expect(err.message).to.equal('Mapping for attribute: nameXEE not found in model: Pet.');
             });
+
+            query = util.newQueryForPet(session);
+            query.fetchAttr('name');
+            session.connection.failCursor = true;
+            session.execute(query, function (err, petNames) {
+                session.connection.failCursor = false;
+                expect(err.message).to.equal('Cursor failure.');
+            });
         });
     })
     it('Column Converter Validity', function () {

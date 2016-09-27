@@ -10,6 +10,7 @@ class ApatiteTestConnection extends ApatiteConnection {
         this.failBeginTrans = false;
         this.failCommitTrans = false;
         this.failRollbackTrans = false;
+        this.failCursor = false;
         this.productRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Shampoo', 'T1.QUANTITY': 100 }];
         this.petRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Dog' }, { 'T1.OID': 2, 'T1.NAME': 'Cat' }, { 'T1.OID': 3, 'T1.NAME': 'Mouse' }, { 'T1.OID': 4, 'T1.NAME': 'Donkey' }];
         this.petRecords2 = [{ 'T1.OID': 1, 'T1.NAME': 'Dog', 'T1.AGE': 11 }, { 'T1.OID': 2, 'T1.NAME': 'Cat', 'T1.AGE': 5 }, { 'T1.OID': 3, 'T1.NAME': 'Mouse', 'T1.AGE': 3 }, { 'T1.OID': 4, 'T1.NAME': 'Donkey', 'T1.AGE': 7 }];
@@ -171,8 +172,10 @@ class ApatiteTestConnection extends ApatiteConnection {
                 throw new Error('SQL not defined: ' + key);
         } else if ((sqlStr === 'UPDATE PET SET NAME = ? WHERE OID = ?') && (bindings[0] === 'DogXXXXXXXXXXXXXXX'))
             return onExecuted(new Error('Update statement failed.'));
-
-        onExecuted(null, result);
+        if (this.failCursor)
+            onExecuted(null, new Error('Cursor failure.'));
+        else
+            onExecuted(null, result);
     }
 }
 

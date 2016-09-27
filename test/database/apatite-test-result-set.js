@@ -8,7 +8,10 @@ class ApatiteTestResultSet extends ApatiteResultSet {
     }
 
     fetchAllRows(onRowsFetched) {
-        onRowsFetched(null, this.dbCursor);
+        if (this.dbCursor instanceof Error)
+            onRowsFetched(this.dbCursor, null);
+        else
+            onRowsFetched(null, this.dbCursor);
     }
 
 }
