@@ -13,6 +13,7 @@ Object persistence framework for Node.js.
   * [oracledb](https://github.com/oracle/node-oracledb) if you plan to use Oracle: $ npm install oracledb@1.9.3
   * [pg](https://github.com/brianc/node-postgres) if you plan to use Postgres: $ npm install pg@6.0.0
   * [mysql](https://github.com/mysqljs/mysql) if you plan to use Mysql: $ npm install mysql@2.11.1
+  * [tedious](https://github.com/tediousjs/tedious) if you plan to use Microsoft SQL Server: $ npm install tedious@1.14.0, optionally for connection pool: [tedious-connection-pool](https://github.com/tediousjs/tedious-connection-pool) : $ npm install tedious-connection-pool@1.0.5
 
 ## Installation
 
@@ -86,6 +87,12 @@ You could also create descriptor from a simple object:
 	// Mysql
 	var connOptions = { userName: 'apatite', password: 'apatite', connectionInfo: 'localhost/apatite' };
 	var apatite = require('apatite').forMysql(connOptions);
+	```
+
+	```js
+	// Mssql
+	var connOptions = { userName: 'apatite', password: 'apatite', connectionInfo: 'localhost/apatite' };
+	var apatite = require('apatite').forMssql(connOptions);
 	```
 
 	```js
