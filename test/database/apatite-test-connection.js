@@ -52,6 +52,7 @@ class ApatiteTestConnection extends ApatiteConnection {
         this.maxBookPagesResult = Math.max.apply(Math,this.bookRecords.map(function(row){return row['T1.NUMBEROFPAGES'];}));
         this.minBookPagesResult = Math.min.apply(Math,this.bookRecords.map(function(row){return row['T1.NUMBEROFPAGES'];}));
         this.sqlResults = {
+            'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE T1.OID IN (?,?,?) AND EXISTS ( SELECT T2.OID AS "T2.OID", T2.NAME AS "T2.NAME", T2.DEPTOID AS "T2.DEPTOID" FROM EMP T2 WHERE T2.DEPTOID = T1.OID )123': this.departmentRecords,
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE NOT EXISTS ( SELECT T2.OID AS "T2.OID", T2.NAME AS "T2.NAME", T2.PETOID AS "T2.PETOID" FROM PERSON T2 WHERE T2.PETOID = T1.OID )': [this.petRecords[2], this.petRecords[3]],
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM PET T1 WHERE EXISTS ( SELECT T2.OID AS "T2.OID", T2.NAME AS "T2.NAME", T2.PETOID AS "T2.PETOID" FROM PERSON T2 WHERE T2.PETOID = T1.OID )': this.petRecords,
             'SELECT T1.OID AS "T1.OID", T1.NAME AS "T1.NAME" FROM DEPT T1 WHERE EXISTS ( SELECT T2.OID AS "T2.OID", T2.NAME AS "T2.NAME", T2.DEPTOID AS "T2.DEPTOID" FROM EMP T2 WHERE T2.DEPTOID = T1.OID AND T2.NAME = ? )Madhu': [this.departmentRecords[0]],

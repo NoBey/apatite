@@ -47,6 +47,7 @@ describe('ApatiteOneToOneQueryTest', function () {
             });
         });
         util.newSession(function (err, session) {
+            util.apatite.defaultCacheSize = 10;
             var query = util.newQueryForPerson(session);
             query.execute(function (err, people) {
                 expect(people.length).to.equal(3); // all people are now in cache
@@ -57,6 +58,7 @@ describe('ApatiteOneToOneQueryTest', function () {
                     query.enclose.attr('pet').eq(null);
                     query.execute(function(err, result) {
                         expect(result.length).to.equal(3);
+                        util.apatite.defaultCacheSize = 0;
                     });
                 });
             });

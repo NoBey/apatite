@@ -22,6 +22,7 @@ describe('ApatiteExpressionTest', function () {
             query = util.newQueryForDepartment(session);
             subQuery = util.newQueryForEmployee(session);
             subQuery.attr('department.oid').eq(query.attrJoin('oid'));
+            query.attr('oid').in([1, 2, 3]).and;
             query.exists(subQuery);
             query.execute(function (err, departments) {// all objects from cache
                 expect(departments.length).to.equal(3)
