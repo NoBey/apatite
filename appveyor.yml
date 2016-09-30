@@ -66,6 +66,7 @@ after_test:
   - npm install mocha-lcov-reporter@1.2.0
   - node_modules\.bin\istanbul cover node_modules\mocha\bin\_mocha --report lcovonly -- -R spec --recursive
   - ps: get-content .\coverage\lcov.info | node .\node_modules\coveralls\bin\coveralls.js
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 # Don't actually do MSBuild.
 build: off
