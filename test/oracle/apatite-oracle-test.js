@@ -38,6 +38,7 @@ function doConnResultSetFailTests(done, session) {
     var sqlOptions = { isApatiteDirectSql: true, resultSet: true };
     var onExecuted = function(err, result) {
         expect(err.message).to.equal('Failed to get rows.');
+        session.connection.testResultSet = null;
         doResultSetTests(done);
     }
     session.connection.testResultSet = resultSet;
