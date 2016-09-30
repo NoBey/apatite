@@ -92,6 +92,13 @@ describe('ApatiteTest', function() {
         (function () {
             apatite.dialect.newConnection();
         }).should.Throw('My subclass should have overridden this method.');
-
+        class SomeNonExistingDialectModule {
+            static getModuleName() {
+                return 'foomodulename'
+            }
+        }
+        (function () {
+            Apatite.for(SomeNonExistingDialectModule, {});
+        }).should.Throw('Module "foomodulename" not found.');
     });
 })

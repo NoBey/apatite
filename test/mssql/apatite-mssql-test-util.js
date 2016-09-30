@@ -13,8 +13,8 @@ class ApatiteMssqlTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatements() {
         return [
-            new ApatiteSQLStatement(null, "CREATE TABLE DEPT(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL, NAME varchar(50) NULL)", []),
-            new ApatiteSQLStatement(null, "CREATE TABLE EMP(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL, NAME varchar(50) NULL, DEPTOID int NOT NULL)", [])
+            new ApatiteSQLStatement(null, "IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='DEPT' AND XTYPE='U') CREATE TABLE DEPT(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL, NAME varchar(50) NULL)", []),
+            new ApatiteSQLStatement(null, "IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='EMP' AND XTYPE='U') CREATE TABLE EMP(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL, NAME varchar(50) NULL, DEPTOID int NOT NULL)", [])
         ];
     }
 
@@ -27,7 +27,7 @@ class ApatiteMssqlTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatementsForPool() {
         return [
-            new ApatiteSQLStatement(null, 'CREATE TABLE TEMPPOOL(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL)', [])
+            new ApatiteSQLStatement(null, "IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='TEMPPOOL' AND XTYPE='U') CREATE TABLE TEMPPOOL(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL)", [])
         ];
     }
 

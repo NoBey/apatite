@@ -29,6 +29,15 @@ module.exports.tearDown = function (done, util, session) {
     });
 }
 
+module.exports.failSQLTest = function (done, session, util) {
+    var sqlOptions = { isApatiteDirectSql: true, resultSet: true };
+    var onExecuted = function(err, result) {
+        expect(err).to.exist;
+        done();
+    }
+    session.connection.executeSQLString('select invalid sql statement from DEPT', [], onExecuted, sqlOptions)
+}
+
 module.exports.testFunction = function (done, session, util) {
     var query = util.newQueryForDepartment(session);
     var sqlOptions = { isApatiteDirectSql: true, resultSet: true };
@@ -55,7 +64,7 @@ module.exports.testFunction = function (done, session, util) {
                     changesDone();
                 }, function (err) {
                     expect(err).to.exist;
-                    done();    
+                    done();
                 });
             }, sqlOptions);
         }

@@ -13,6 +13,10 @@ class ApatitePostgresTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatements() {
         return [
+            new ApatiteSQLStatement(null, 'DROP TABLE IF EXISTS public.dept', []),
+            new ApatiteSQLStatement(null, 'DROP TABLE IF EXISTS public.emp', []),
+            new ApatiteSQLStatement(null, 'DROP SEQUENCE IF EXISTS public.dept_oid_seq', []),
+            new ApatiteSQLStatement(null, 'DROP SEQUENCE IF EXISTS public.emp_oid_seq', []),
             new ApatiteSQLStatement(null, 'CREATE SEQUENCE public.dept_oid_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1', []),
             new ApatiteSQLStatement(null, 'ALTER TABLE public.dept_oid_seq OWNER TO apatite', []),
             new ApatiteSQLStatement(null, 'CREATE SEQUENCE public.emp_oid_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1', []),
@@ -35,6 +39,7 @@ class ApatitePostgresTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatementsForPool() {
         return [
+            new ApatiteSQLStatement(null, 'DROP TABLE IF EXISTS public.temppool', []),
             new ApatiteSQLStatement(null, 'CREATE TABLE public.temppool(oid integer) WITH (OIDS=FALSE)', [])
         ];
     }

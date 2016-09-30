@@ -13,8 +13,8 @@ class ApatiteMysqlTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatements() {
         return [
-            new ApatiteSQLStatement(null, "CREATE TABLE DEPT (OID INT NOT NULL AUTO_INCREMENT, NAME VARCHAR(50) NULL, PRIMARY KEY (OID), UNIQUE INDEX `oid_UNIQUE` (OID ASC))", []),
-            new ApatiteSQLStatement(null, "CREATE TABLE EMP (OID INT NOT NULL AUTO_INCREMENT,NAME VARCHAR(100) NULL, DEPTOID INT NULL, PRIMARY KEY (OID), UNIQUE INDEX `oid_UNIQUE` (OID ASC))", [])
+            new ApatiteSQLStatement(null, "CREATE TABLE IF NOT EXISTS DEPT (OID INT NOT NULL AUTO_INCREMENT, NAME VARCHAR(50) NULL, PRIMARY KEY (OID), UNIQUE INDEX `oid_UNIQUE` (OID ASC))", []),
+            new ApatiteSQLStatement(null, "CREATE TABLE IF NOT EXISTS EMP (OID INT NOT NULL AUTO_INCREMENT,NAME VARCHAR(100) NULL, DEPTOID INT NULL, PRIMARY KEY (OID), UNIQUE INDEX `oid_UNIQUE` (OID ASC))", [])
         ];
     }
 
@@ -27,7 +27,7 @@ class ApatiteMysqlTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatementsForPool() {
         return [
-            new ApatiteSQLStatement(null, 'CREATE TABLE `apatite`.`temppool` (`oid` INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (`oid`), UNIQUE INDEX `oid_UNIQUE` (`oid` ASC))', [])
+            new ApatiteSQLStatement(null, 'CREATE TABLE IF NOT EXISTS `apatite`.`temppool` (`oid` INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (`oid`), UNIQUE INDEX `oid_UNIQUE` (`oid` ASC))', [])
         ];
     }
 
