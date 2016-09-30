@@ -1,8 +1,6 @@
 # Test against this version of Node.js
 environment:
-  matrix:
-    - nodejs_version: "6.1.0"
-    - nodejs_version: "6.6.0"
+  nodejs_version: "6.6.0"
 
 services:
   - mssql2016
@@ -12,11 +10,27 @@ services:
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version x64
   # install modules
   - npm install
 
 before_test:
+  # Start Oracle Setup
+  - git clone https://github.com/apatitejs/appveyor-oracle-setup
+  - npm install ./appveyor-oracle-setup/
+  - md temp
+  - node ./appveyor-oracle-setup/app.js
+  - 7z.exe e "temp/ora11gr2setup.zip.001" -o"orasetup"
+  - orasetup\setup.exe /s /f1"%CD%\appveyor-oracle-setup\OracleXE-Install.iss" /f2"%CD%\orasetup\setup.log"
+  - PATH=%APPVEYOR_BUILD_FOLDER%\oraxeinstall\app\oracle\product\11.2.0\server\bin;%PATH%
+  - SET OCI_LIB_DIR=%APPVEYOR_BUILD_FOLDER%\oraxeinstall\app\oracle\product\11.2.0\server\oci\lib\msvc
+  - SET OCI_INC_DIR=%APPVEYOR_BUILD_FOLDER%\oraxeinstall\app\oracle\product\11.2.0\server\oci\include
+  - 7z.exe x "temp/node-oracledb.zip" -o"node_modules"
+  - 7z.exe x "temp/node-oracledb.zip" -o"appveyor-oracle-setup/node_modules"
+  - cd appveyor-oracle-setup
+  - node orasetup.js
+  - cd..
+  # End Oracle Setup
   - sqlcmd -S localhost -U sa -P Password12! -Q "CREATE DATABASE apatite" -d "master"
   - sqlcmd -S localhost -U sa -P Password12! -Q "CREATE LOGIN apatite WITH PASSWORD = 'Nodejs20090527!'" -d "apatite"
   - sqlcmd -S localhost -U sa -P Password12! -Q "EXEC apatite..sp_addsrvrolemember @loginame = 'apatite', @rolename = 'sysadmin'" -d "apatite"
