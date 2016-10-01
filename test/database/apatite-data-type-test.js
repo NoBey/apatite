@@ -9,37 +9,47 @@ var Column = require('../../lib/database/apatite-column');
 var testTable = new Table('TESTTABLE');
 
 describe('ApatiteDataTypeTest', function () {
-    it('Integer Data Type Validity', function () {
-        var IntegerDataType = require('../../lib/database-type/apatite-integer-data-type');
-        var dataType = new IntegerDataType(null);
+    it('Decimal Data Type Validity', function () {
+        var ApatiteDecimalDataType = require('../../lib/database-type/apatite-decimal-data-type');
+        var dataType = new ApatiteDecimalDataType(null);
         var testColumn;
         (function () {
-            testColumn = new Column('TESTCOLUMN', testTable, dataType);
-        }).should.Throw('Invalid length specified for column: TESTCOLUMN in table TESTTABLE.');
+            testColumn = new Column('TESTDECCOLUMN', testTable, dataType);
+        }).should.Throw('Invalid length specified for column: TESTDECCOLUMN in table TESTTABLE.');
         
-        dataType = new IntegerDataType(0);
+        dataType = new ApatiteDecimalDataType(0);
         (function () {
-            testColumn = new Column('TESTCOLUMN', testTable, dataType);
-        }).should.Throw('Invalid length specified for column: TESTCOLUMN in table TESTTABLE.');
+            testColumn = new Column('TESTDECCOLUMN', testTable, dataType);
+        }).should.Throw('Invalid length specified for column: TESTDECCOLUMN in table TESTTABLE.');
+        var dataType = new ApatiteDecimalDataType(1,null);
+        var testColumn;
+        (function () {
+            testColumn = new Column('TESTDECCOLUMN', testTable, dataType);
+        }).should.Throw('Invalid precision specified for column: TESTDECCOLUMN in table TESTTABLE.');
+        
+        dataType = new ApatiteDecimalDataType(2, 0);
+        (function () {
+            testColumn = new Column('TESTDECCOLUMN', testTable, dataType);
+        }).should.Throw('Invalid precision specified for column: TESTDECCOLUMN in table TESTTABLE.');
     });
     it('String Data Type Validity', function () {
         var StringDataType = require('../../lib/database-type/apatite-string-data-type');
         var dataType = new StringDataType(null);
         var testColumn;
         (function () {
-            testColumn = new Column('TESTCOLUMN', testTable, dataType);
-        }).should.Throw('Invalid length specified for column: TESTCOLUMN in table TESTTABLE.');
+            testColumn = new Column('TESTSTRINGCOLUMN', testTable, dataType);
+        }).should.Throw('Invalid length specified for column: TESTSTRINGCOLUMN in table TESTTABLE.');
         
         dataType = new StringDataType(0);
         (function () {
-            testColumn = new Column('TESTCOLUMN', testTable, dataType);
-        }).should.Throw('Invalid length specified for column: TESTCOLUMN in table TESTTABLE.');
+            testColumn = new Column('TESTSTRINGCOLUMN', testTable, dataType);
+        }).should.Throw('Invalid length specified for column: TESTSTRINGCOLUMN in table TESTTABLE.');
     });
     it('Date Data Type Validity', function () {
         var DateDataType = require('../../lib/database-type/apatite-date-data-type');
         var dataType = new DateDataType();
         (function () {
-            var testColumn = new Column('TESTCOLUMN', testTable, dataType);
+            var testColumn = new Column('TESTDATECOLUMN', testTable, dataType);
         }).should.not.Throw();
     });
 })
