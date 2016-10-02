@@ -18,7 +18,7 @@ class Product {
         column = table.addNewColumn('NAME', apatite.dialect.newVarCharType(50))
         modelDescriptor.newSimpleMapping('name', column)
 
-        column = table.addNewColumn('QUANTITY', apatite.dialect.newDecimalType(11, 2))
+        column = table.addNewColumn('QUANTITY', apatite.dialect.newDecimalType(11, 2).beNotNull())
         modelDescriptor.newSimpleMapping('quantity', column)
         column.beRelativeUpdate()
 

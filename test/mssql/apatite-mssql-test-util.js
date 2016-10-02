@@ -13,7 +13,7 @@ class ApatiteMssqlTestUtil extends ApatiteTestUtil {
 
     getCreateTableStatements() {
         return [
-            new ApatiteSQLStatement(null, "IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='DEPT' AND XTYPE='U') CREATE TABLE DEPT(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL, NAME varchar(50) NULL)", []),
+            new ApatiteSQLStatement(null, "IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='DEPT' AND XTYPE='U') CREATE TABLE DEPT(OID int NOT NULL IDENTITY(1,1) PRIMARY KEY, NAME varchar(50) NULL)", []),
             new ApatiteSQLStatement(null, "IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='EMP' AND XTYPE='U') CREATE TABLE EMP(OID int IDENTITY(1,1) PRIMARY KEY NOT NULL, NAME varchar(50) NULL, DEPTOID int NOT NULL)", [])
         ];
     }
