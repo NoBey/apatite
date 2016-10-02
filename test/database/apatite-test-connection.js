@@ -11,6 +11,8 @@ class ApatiteTestConnection extends ApatiteConnection {
         this.failCommitTrans = false;
         this.failRollbackTrans = false;
         this.failCursor = false;
+        this.failSql = false;
+        this.isDDLSqlPromiseTest = false;
         this.productRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Shampoo', 'T1.QUANTITY': 100 }];
         this.petRecords = [{ 'T1.OID': 1, 'T1.NAME': 'Dog' }, { 'T1.OID': 2, 'T1.NAME': 'Cat' }, { 'T1.OID': 3, 'T1.NAME': 'Mouse' }, { 'T1.OID': 4, 'T1.NAME': 'Donkey' }];
         this.petRecords2 = [{ 'T1.OID': 1, 'T1.NAME': 'Dog', 'T1.AGE': 11 }, { 'T1.OID': 2, 'T1.NAME': 'Cat', 'T1.AGE': 5 }, { 'T1.OID': 3, 'T1.NAME': 'Mouse', 'T1.AGE': 3 }, { 'T1.OID': 4, 'T1.NAME': 'Donkey', 'T1.AGE': 7 }];
@@ -152,6 +154,23 @@ class ApatiteTestConnection extends ApatiteConnection {
     }
 
     basicExecuteSQLString(sqlStr, bindVariables, onExecuted) {
+        if (this.isDDLSqlPromiseTest) {
+            var self = this
+            if (sqlStr === 'ALTER TABLE PET ADD (NAME VARCHAR (100));') {
+                // setTimeout required for promise tests
+                setTimeout(function () {
+                    onExecuted(new Error('SQL execution failed.'));
+                }, 5);
+            }
+            else {
+                // setTimeout required for promise tests
+                setTimeout(function () {
+                    onExecuted(null, null);
+                }, 5);
+            }
+            return;
+        }
+
         var bindings = this.buildBindVariableValues(bindVariables);
         this.sqlCount++;
         var key = sqlStr + bindings.join('');
