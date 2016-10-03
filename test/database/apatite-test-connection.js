@@ -156,7 +156,7 @@ class ApatiteTestConnection extends ApatiteConnection {
     basicExecuteSQLString(sqlStr, bindVariables, onExecuted) {
         if (this.isDDLSqlPromiseTest) {
             var self = this
-            if (sqlStr === 'ALTER TABLE PET ADD (NAME VARCHAR (100));') {
+            if (sqlStr === 'ALTER TABLE PET ADD (NAME VARCHAR (100))') {
                 // setTimeout required for promise tests
                 setTimeout(function () {
                     onExecuted(new Error('SQL execution failed.'));

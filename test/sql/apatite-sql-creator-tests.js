@@ -83,13 +83,21 @@ describe('ApatiteSQLScriptCreatorTest', function () {
         it('Oracle Dialect SQL Creation Validity', function (done) {
             oracleUtil.newSession(function (err, session) {
                 var script = session.createSQLScriptForModel('Pet');
-                expect(script).to.equal('CREATE TABLE PET (OID NUMBER PRIMARY KEY, NAME VARCHAR2 (100));');
+                var expectedScript = 'CREATE TABLE PET (OID NUMBER PRIMARY KEY, NAME VARCHAR2 (100));\r\n';
+                expectedScript += 'CREATE SEQUENCE PET_seq START WITH 1;\r\n';
+                expectedScript += 'CREATE OR REPLACE TRIGGER PET_trg BEFORE INSERT ON PET FOR EACH ROW BEGIN SELECT PET_seq.NEXTVAL INTO :new.OID FROM dual; END;';
+                expect(script).to.equal(expectedScript);
 
                 script = session.createSQLScriptForModel('Order');
-                expect(script).to.equal('CREATE TABLE ORDER (OID NUMBER PRIMARY KEY, ORDERDATE DATE);');
+                expectedScript = 'CREATE TABLE ORDER (OID NUMBER PRIMARY KEY, ORDERDATE DATE);\r\n';
+                expectedScript += 'CREATE SEQUENCE ORDER_seq START WITH 1;\r\n';
+                expectedScript += 'CREATE OR REPLACE TRIGGER ORDER_trg BEFORE INSERT ON ORDER FOR EACH ROW BEGIN SELECT ORDER_seq.NEXTVAL INTO :new.OID FROM dual; END;';
+                expect(script).to.equal(expectedScript);
 
                 script = session.createSQLScriptForModel('Product');
-                expect(script).to.equal('CREATE TABLE PRODUCT (OID NUMBER PRIMARY KEY, NAME VARCHAR2 (50), QUANTITY NUMBER (11, 2) NOT NULL);');
+                expectedScript = 'CREATE TABLE PRODUCT (OID NUMBER PRIMARY KEY, NAME VARCHAR2 (50), QUANTITY NUMBER (11, 2) NOT NULL);\r\n';
+                expectedScript += 'CREATE SEQUENCE PRODUCT_seq START WITH 1;\r\n';
+                expectedScript += 'CREATE OR REPLACE TRIGGER PRODUCT_trg BEFORE INSERT ON PRODUCT FOR EACH ROW BEGIN SELECT PRODUCT_seq.NEXTVAL INTO :new.OID FROM dual; END;';
 
                 script = session.createSQLScriptForAttribute('Pet', 'name');
                 expect(script).to.equal('ALTER TABLE PET ADD (NAME VARCHAR2 (100));');

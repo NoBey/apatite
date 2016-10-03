@@ -52,7 +52,7 @@ describe('ApatiteModelDescriptorTest', function() {
             mappings: [
                 {attr: 'oid', col: 'OID', pk: true, type: 'serial'},
                 {attr: 'name', col: 'NAME', type: 'varchar', length: 100},
-                {attr: 'salary', col: 'SALARY', type: 'decimal', length: 12, precision: 2},
+                {attr: 'salary', col: 'SALARY', type: 'decimal', notNull: true, length: 12, precision: 2},
                 {attr: 'joinedOn', col: 'JOINEDON', type: 'date'},
                 {attr: 'department', toOne: {modelName: 'Department', isLeftOuterJoin: true, fromCols: [{col: 'DEPTOID', type: 'int', length: 10}], toCols: [{table: 'DEPT', col: 'OID', pk: true, type: 'serial'}]}}
             ]
