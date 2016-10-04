@@ -164,10 +164,11 @@ You could also create descriptor from a simple object:
 
 	```js
 	...
-		// Create new department and register it to session
+		// Create new department
+		var department = new Department();
+		department.name = 'Sales';
+		// Register it to session
 		var changesToDo = function (changesDone) {
-			var department = new Department();
-			department.name = 'Sales';
 			session.registerNew(department);
 			changesDone(); // must be called when you are done with all changes
 		}
@@ -182,22 +183,20 @@ You could also create descriptor from a simple object:
 	```js
 	...
 		// Change an existing department
-		var changesToDo = function (changesDone) {
-			var query = session.newQuery(Department);
-			query.attr('name').eq('Sales');
-			query.execute(function(err, departments) {
-				if (err) {
-					changesDone(err);
-					return;
-				}
+		var query = session.newQuery(Department);
+		query.attr('name').eq('Sales');
+		query.execute(function(executeErr, departments) {
+			if (executeErr) {
+				return console.error(executeErr);
+			}
+			var changesToDo = function (changesDone) {
 				departments[0].name = 'Pre-Sales';
 				changesDone(); // must be called when you are done with all changes
+			}
+			session.doChangesAndSave(changesToDo, function (saveErr) {
+				if (saveErr)
+					console.error(saveErr.message);
 			});
-		}
-
-		session.doChangesAndSave(changesToDo, function (saveErr) {
-			if (saveErr)
-				console.error(saveErr.message);
 		});
 	...
 	```
@@ -208,9 +207,9 @@ You could also create descriptor from a simple object:
 		var changesToDo = function (changesDone) {
 			var query = session.newQuery(Department);
 			query.attr('name').eq('Pre-Sales');
-			query.execute(function(err, departments) {
-				if (err) {
-					changesDone(err);
+			query.execute(function(executeErr, departments) {
+				if (executeErr) {
+					changesDone(executeErr);
 					return;
 				}
 				session.registerDelete(departments[0]);
