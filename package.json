@@ -1,6 +1,6 @@
 {
   "name": "apatite",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Object Persistence Framework for Node.js",
   "main": "index.js",
   "author": {
@@ -19,7 +19,11 @@
     "framework",
     "mapping",
     "object",
-    "relational"
+    "oracle",
+    "postgres",
+    "mysql",
+    "sql server",
+    "ms sql"
   ],
   "engines": {
     "node": ">=6.1.0"
