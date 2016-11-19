@@ -160,6 +160,40 @@ You could also create descriptor from a simple object:
 	}
 	```
 
+	```js
+	//query results from cursor stream
+	apatite.newSession(function (err, session) {
+		var query = session.newQuery(Department)
+		query.returnCursorStream = true
+
+		query.execute(function (err, cursorStream) {
+			if (err) {
+				console.log(err)
+				return endSession(session)
+			}
+
+			cursorStream.on('error', function(cursorStreamErr) {
+				console.log(cursorStreamErr)
+				endSession(session)
+			})
+			cursorStream.on('result', function(department) {
+				console.log(JSON.stringify(department))
+			})
+			cursorStream.on('end', function() {
+				endSession(session)
+			})
+		})
+	})
+
+	function endSession(session) {
+		session.end(function (endConnErr) {
+			if (endConnErr)
+				return console.log(endConnErr)
+			console.log('Connection ended.')
+		})
+	}
+	```
+
 5. Do changes to your objects and save.
 
 	```js

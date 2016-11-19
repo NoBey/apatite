@@ -148,7 +148,8 @@ describe('ApatiteSQLScriptCreatorTest', function () {
             expectedScript += 'CREATE TABLE SHAPE (OID INT (10) PRIMARY KEY, NAME VARCHAR (100), SHAPETYPE INT (1), NOOFVERTICES INT (2), TESTATTR VARCHAR (2));\r\n';
             expectedScript += 'CREATE TABLE PRODUCT (OID INT PRIMARY KEY, NAME VARCHAR (50), QUANTITY DECIMAL (11, 2) NOT NULL);\r\n';
             expectedScript += 'CREATE TABLE BOOK (OID INT PRIMARY KEY, NAME VARCHAR (100), NUMBEROFPAGES INT (4));\r\n';
-            expectedScript += 'CREATE TABLE ORDER (OID INT PRIMARY KEY, ORDERDATE DATE);';
+            expectedScript += 'CREATE TABLE ORDER (OID INT PRIMARY KEY, ORDERDATE DATE);\r\n';
+            expectedScript += 'CREATE TABLE NONEXISTENT (OID INT PRIMARY KEY);';
 
             script = session.createSQLScriptForAllModels();
             expect(script).to.equal(expectedScript);

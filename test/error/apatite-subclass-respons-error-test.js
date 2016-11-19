@@ -52,7 +52,7 @@ describe('ApatiteSubClassResponsibilityTest', function() {
             resultSet.fetchNextRows();
         }).should.Throw(errMsg);
         (function () {
-            resultSet.close();
+            resultSet.closeResultSet();
         }).should.Throw(errMsg);
 
         var expr = new ApatiteExpression();

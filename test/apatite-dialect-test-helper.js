@@ -64,7 +64,7 @@ module.exports.testFunction = function (done, session, util) {
                     changesDone();
                 }, function (err) {
                     expect(err).to.exist;
-                    done();
+                    doCursorStreamTests(done, session, util);
                 });
             }, sqlOptions);
         }
@@ -78,7 +78,19 @@ module.exports.testFunction = function (done, session, util) {
             expect(result.rows.length).to.equal(1);
             expect(result.rows[0].name).to.equal('SomeEmp');
 
-            session.doChangesAndSave(changesToDo, onEmpRemovalSaved);
+            var query2 = util.newQueryForEmployee(session);
+            query2.returnCursorStream = true;
+            query2.execute(function (execErr, cursorStream) {
+                cursorStream.on('error', function(cursorErr) {
+                    expect(cursorErr).to.not.exist;
+                });
+                cursorStream.on('result', function(emp) {
+                    expect(emp.name).to.equal('SomeEmp');
+                });
+                cursorStream.on('end', function() {
+                    session.doChangesAndSave(changesToDo, onEmpRemovalSaved);
+                });
+            });
         }
 
         var onDeptSelectFetched = function (err, deptResult) {
@@ -114,5 +126,16 @@ module.exports.testFunction = function (done, session, util) {
             session.connection.executeSQLString('select oid as "oid", name as "name" from DEPT', [], onFirstDeptSelectFetched, sqlOptions);
         });
 
+    });
+}
+
+function doCursorStreamTests(done, session, util) {
+    var query = util.newQueryForNonExistentTable(session);
+    query.returnCursorStream = true;
+    query.execute(function (execErr, cursorStream) {
+        cursorStream.on('error', function(cursorErr) {
+            expect(cursorErr).to.exist;
+            done();
+        });
     });
 }

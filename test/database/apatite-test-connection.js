@@ -2,6 +2,7 @@
 
 var ApatiteConnection = require('../../lib/database/apatite-connection.js');
 var ApatiteError = require('../../lib/error/apatite-error');
+var ApatiteTestQueryStream = require('./apatite-test-query-stream.js');
 
 class ApatiteTestConnection extends ApatiteConnection {
     constructor(dialect) {
@@ -153,7 +154,12 @@ class ApatiteTestConnection extends ApatiteConnection {
             onConnected(null);
     }
 
-    basicExecuteSQLString(sqlStr, bindVariables, onExecuted) {
+    basicExecuteSQLString(sqlStr, bindVariables, onExecuted, options) {
+        if (options && options.returnCursorStream) {
+            var queryStream = new ApatiteTestQueryStream(this);
+            onExecuted(null, queryStream);
+            return;
+        }
         if (this.isDDLSqlPromiseTest) {
             var self = this
             if (sqlStr === 'ALTER TABLE PET ADD (NAME VARCHAR (100))') {

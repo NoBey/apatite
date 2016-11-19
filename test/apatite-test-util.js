@@ -20,6 +20,8 @@ var Book = require('./test-models/book.js');
 
 var Order = require('./test-models/order.js');
 
+var NonExistentTable = require('./test-models/non-existent-table.js');
+
 class ApatiteTestUtil {
     constructor() {
         this.apatite = this.newApatite();
@@ -56,6 +58,8 @@ class ApatiteTestUtil {
 
         this.apatite.registerModel(Book);
         this.apatite.registerModel(Order);
+
+        this.apatite.registerModel(NonExistentTable);
         this.modelsRegistered = true;
     }
 
@@ -113,6 +117,10 @@ class ApatiteTestUtil {
 
     newQueryForBook(session) {
         return session.newQuery(Book);
+    }
+
+    newQueryForNonExistentTable(session) {
+        return session.newQuery(NonExistentTable);
     }
 
     newSession(onSessionCreated) {

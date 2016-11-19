@@ -80,7 +80,22 @@ describe('ApatiteQueryResultTest', function () {
                 expect(err.message).to.equal('Cursor failure.');
             });
         });
-    })
+    });
+    it('Cursor Stream Validity', function (done) {
+        util.newSession(function (err, session) {
+            var query = util.newQueryForPet(session);
+            query.fetchAttr('name');
+            query.returnCursorStream = true;
+            session.connection.failCursor = true;
+            session.execute(query, function (err, cursorStream) {
+                session.connection.failCursor = false;
+                cursorStream.on('error', function(cursorErr) {
+                    expect(cursorErr.message).to.equal('Cursor failure.');
+                    done();
+                })
+            });
+        });
+    });
     it('Column Converter Validity', function () {
         var column = util.apatite.getTable('PET').getColumn('NAME')
         column.setConverters(function (value) {
