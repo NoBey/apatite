@@ -34,15 +34,6 @@ describe('ApatiteSubClassResponsibilityTest', function() {
         (function () {
             connection.basicExecuteSQLString();
         }).should.Throw(errMsg);
-        (function () {
-            connection.basicBeginTransaction();
-        }).should.Throw(errMsg);
-        (function () {
-            connection.basicCommitTransaction();
-        }).should.Throw(errMsg);
-        (function () {
-            connection.basicRollbackTransaction();
-        }).should.Throw(errMsg);
 
         var resultSet = new ApatiteResultSet();
         (function () {

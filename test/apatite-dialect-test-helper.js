@@ -3,7 +3,7 @@
 module.exports.setUp = function (done, util, onSetupFinished) {
     var connOptions = util.apatite.dialect.connectionOptions;
     var oriUserName = connOptions.userName;
-    connOptions.userName = 'foo_and_bar';
+    connOptions.userName = ':/foo_and_bar';
     util.newSession(function (invalidSessionErr, invalidSession) {
         expect(invalidSessionErr).to.exist;
         connOptions.userName = oriUserName;
@@ -63,7 +63,8 @@ module.exports.testFunction = function (done, session, util) {
                     session.registerNew(newDepartment);
                     changesDone();
                 }, function (err) {
-                    expect(err).to.exist;
+                    if (!util.apatite.dialect.ignoreDataTypeLength)
+                        expect(err).to.exist;
                     doCursorStreamTests(done, session, util);
                 });
             }, sqlOptions);

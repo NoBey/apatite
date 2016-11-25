@@ -6,7 +6,7 @@ module.exports.setUp = function (done, util, onSetupFinished) {
 
     var connOptions = util.apatite.dialect.connectionOptions;
     var oriUserName = connOptions.userName;
-    connOptions.userName = 'foo_and_bar';
+    connOptions.userName = ':/foo_and_bar';
     util.createTestTablesForPool(function (err) {
         connOptions.userName = oriUserName;
         expect(err).to.exist;

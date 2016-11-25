@@ -6,7 +6,8 @@ var expect = require('chai').expect;
 
 var Table = require('../../lib/database/apatite-table');
 var Column = require('../../lib/database/apatite-column');
-var testTable = new Table('TESTTABLE');
+var ApatiteTestDialect = require('../database/apatite-test-dialect.js');
+var testTable = new Table('TESTTABLE', new ApatiteTestDialect({ userName: 'apatite', password: 'test' }));
 
 describe('ApatiteDataTypeTest', function () {
     it('Decimal Data Type Validity', function () {

@@ -5,6 +5,31 @@ var expect = require('chai').expect;
 
 describe('ApatiteSQLScriptCreatorTest', function () {
 
+    var ApatiteSqliteTestUtil = require('../sqlite/apatite-sqlite-test-util');
+    var sqliteUtil = new ApatiteSqliteTestUtil();
+    if (sqliteUtil.existsModule()) {
+        it('Sqlite Dialect SQL Creation Validity', function (done) {
+            sqliteUtil.newSession(function (err, session) {
+                var script = session.createSQLScriptForModel('Pet');
+                expect(script).to.equal('CREATE TABLE PET (OID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT);');
+
+                script = session.createSQLScriptForModel('Order');
+                expect(script).to.equal('CREATE TABLE ORDER (OID INTEGER PRIMARY KEY AUTOINCREMENT, ORDERDATE INTEGER);');
+
+                script = session.createSQLScriptForModel('Product');
+                expect(script).to.equal('CREATE TABLE PRODUCT (OID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, QUANTITY NUMERIC NOT NULL);');
+
+                script = session.createSQLScriptForAttribute('Pet', 'name');
+                expect(script).to.equal('ALTER TABLE PET ADD (NAME TEXT);');
+                session.end(function (endErr) {
+                    expect(endErr).to.not.exist;
+                    done();
+                });
+            });
+        });
+    }
+
+
     var ApatitePostgresTestUtil = require('../postgres/apatite-postgres-test-util');
     var postgresUtil = new ApatitePostgresTestUtil();
     if (postgresUtil.existsModule()) {
