@@ -24,9 +24,9 @@ $ npm install apatite
 
 ## Quick Start
 
-1. Install the prerequisites.
+* Install the prerequisites.
 
-2. Create your class and define a static method getModelDescriptor which takes apatite as an argument.
+* Create your class and define a static method getModelDescriptor which takes apatite as an argument.
 
 ```js
 class Department {
@@ -70,7 +70,7 @@ static getModelDescriptor(apatite) {
 }
 ```
 
-3. Register your models.
+* Register your models.
 
 ```js
 // Oracle
@@ -106,7 +106,7 @@ var apatite = require('apatite').forSqlite(connOptions);
 apatite.registerModel(Department);
 ```
 
-4. Create session and start querying your objects.
+* Create session and start querying your objects.
 
 ```js
 // Creates a new session and database connection
@@ -201,7 +201,7 @@ function endSession(session) {
 }
 ```
 
-5. Do changes to your objects and save.
+* Do changes to your objects and save.
 
 ```js
 ...
