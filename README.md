@@ -1,11 +1,20 @@
 ﻿# Apatite
 
-Object persistence framework for Node.js.
+Object persistence framework for Node.js. ORM framework supports: MySQL, Oracle, Postgres, SQL Server, Sqlite.
 
 [![npm](https://img.shields.io/npm/v/apatite.svg)](https://npmjs.org/package/apatite)
 [![Linux Build](https://img.shields.io/travis/apatitejs/apatite/master.svg?label=linux)](https://travis-ci.org/apatitejs/apatite)
 [![Windows Build](https://img.shields.io/appveyor/ci/apatitejs/apatite/master.svg?label=windows)](https://ci.appveyor.com/project/apatitejs/apatite)
 [![Coverage Status](https://coveralls.io/repos/github/apatitejs/apatite/badge.svg?branch=master)](https://coveralls.io/github/apatitejs/apatite?branch=master)
+
+## Features
+
+  * Based on object oriented principles.
+  * Zero dependencies.
+  * Transaction based.
+  * Generate (or execute) SQL scripts to create tables/columns for models/attributes.
+  * Apart from standard mappings, supports inheritence mapping too.
+  * Optional objects session cache management.
 
 ## Prerequisites
 

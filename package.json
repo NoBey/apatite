@@ -1,7 +1,7 @@
 {
   "name": "apatite",
-  "version": "1.8.2",
-  "description": "Object Persistence Framework for Node.js",
+  "version": "1.8.3",
+  "description": "Object persistence framework for Node.js. ORM framework supports: MySQL, Oracle, Postgres, SQL Server, Sqlite.",
   "main": "index.js",
   "author": {
     "name": "Madhu",
@@ -23,7 +23,9 @@
     "postgres",
     "mysql",
     "sql server",
-    "ms sql"
+    "ms sql",
+    "sqlite",
+    "sqlite3"
   ],
   "engines": {
     "node": ">=6.1.0"
