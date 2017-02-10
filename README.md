@@ -274,6 +274,10 @@ function endSession(session) {
 ...
 ```
 
+## Contributions
+
+Looking for someone to take over this project. Drop me a mail if interested.
+
 ## Links
 
   - [Documentation](https://github.com/apatitejs/doc/blob/master/doc.md)
