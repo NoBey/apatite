@@ -276,7 +276,7 @@ function endSession(session) {
 
 ## Contributions
 
-Looking for someone to take over this project. Drop me a mail if interested.
+Looking for someone to take over this project. Drop me a mail (gmail: apatitejs) if interested.
 
 ## Links
 
